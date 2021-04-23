@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 
 @Getter
@@ -18,7 +19,7 @@ public class CppCheckTest {
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name="id")
-    private java.util.UUID id;
+    private UUID id;
     @JsonProperty("error")
     long error;
     @JsonProperty("performance")
