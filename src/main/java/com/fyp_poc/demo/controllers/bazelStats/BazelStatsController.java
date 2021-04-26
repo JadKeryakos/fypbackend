@@ -1,4 +1,4 @@
-package com.fyp_poc.demo.controllers;
+package com.fyp_poc.demo.controllers.bazelStats;
 
 import com.fyp_poc.demo.DTO.BazelStats;
 import com.fyp_poc.demo.repositories.BazelStatsRepository;
@@ -14,9 +14,22 @@ import org.springframework.web.bind.annotation.*;
 public class BazelStatsController {
     private final BazelStatsRepository bazelStatsRepository;
 
+
+
+
+
+
     public BazelStatsController(BazelStatsRepository bazelStatsListRepository) {
         this.bazelStatsRepository = bazelStatsListRepository;
     }
+
+
+    @PostMapping("/")
+    BazelStats addStatNew(@RequestBody BazelStats bazelStatsList){
+        return bazelStatsRepository.save(bazelStatsList);
+    }
+
+
 
     @GetMapping("/all")
     ResponseEntity<Iterable<BazelStats>> getAllStats(){
