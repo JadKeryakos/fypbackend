@@ -11,7 +11,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class CppCheckResponse {
-    private UUID id;
+    private long id;
+    private String buildName;
     private long error;
     private long performance;
     private long portability;

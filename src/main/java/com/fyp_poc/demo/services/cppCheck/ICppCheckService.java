@@ -13,4 +13,6 @@ public interface ICppCheckService {
     List<CppCheck> findAllChecks();
 
     CppCheck findCppCheck(UUID cppCheckId) throws Exception;
+    List<CppCheck> findLastNChecks(long n);
+    List<CppCheck> getCppCheckStats(List<String> aggregations);
 }

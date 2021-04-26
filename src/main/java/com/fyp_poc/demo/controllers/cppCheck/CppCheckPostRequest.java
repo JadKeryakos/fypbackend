@@ -12,6 +12,7 @@ import java.util.UUID;
 @Builder
 public class CppCheckPostRequest {
 
+    private String buildName;
     private long error;
     private long performance;
     private long portability;

@@ -34,6 +34,11 @@ public class CppCheckController {
          }
     }
 
+    @GetMapping("/agg")
+    public List<CppCheck> findCheckById(){
+         return cppCheckService.findLastNChecks(10);
+    }
+
     @GetMapping("/{cppCheckId}")
     public ResponseEntity findCheckById(@PathVariable UUID cppCheckId){
         try{
@@ -67,6 +72,7 @@ public class CppCheckController {
     private CppCheckResponse buildFromCppCheck(CppCheck cppCheck) {
         return new CppCheckResponse().builder()
                 .id(cppCheck.getId())
+                .buildName(cppCheck.getBuildName())
                 .error(cppCheck.getError())
                 .performance(cppCheck.getPerformance())
                 .portability(cppCheck.getPortability())
@@ -77,6 +83,7 @@ public class CppCheckController {
 
     private CppCheck buildFromRequest(CppCheckPostRequest request) {
         return new CppCheck().builder()
+                .buildName(request.getBuildName())
                 .error(request.getError())
                 .performance(request.getPerformance())
                 .portability(request.getPortability())

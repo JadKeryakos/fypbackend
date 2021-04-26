@@ -6,7 +6,11 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.function.Function;
 
 
 @Getter
@@ -18,10 +22,12 @@ import java.util.UUID;
 @Table(name="cpp_check")
 public class CppCheck {
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name="id")
-    private UUID id;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private long id;
+    @Column(name="build_name")
+    @JsonProperty("build-name")
+    private String buildName;
     @JsonProperty("error")
     long error;
     @JsonProperty("performance")
@@ -32,4 +38,5 @@ public class CppCheck {
     long style;
     @JsonProperty("warning")
     long warning;
+    static List<String> attributes = Arrays.asList("error", "performance", "portability", "style", "warning");
 }
