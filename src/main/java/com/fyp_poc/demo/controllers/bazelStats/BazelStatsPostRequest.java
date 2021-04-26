@@ -15,8 +15,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BazelStatsPostRequest {
-
+    @JsonProperty("build_name")
     private String buildName;
+    @JsonProperty("payload")
     private List<BazelStatsVectorPostRequest> bazelStatsVectorList;
 }
 
