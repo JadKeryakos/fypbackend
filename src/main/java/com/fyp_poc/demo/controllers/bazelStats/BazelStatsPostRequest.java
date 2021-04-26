@@ -16,8 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class BazelStatsPostRequest {
 
-
-    String buildName;
+    private String buildName;
     private List<BazelStatsVectorPostRequest> bazelStatsVectorList;
 }
 
@@ -27,7 +26,7 @@ public class BazelStatsPostRequest {
 @Builder
 @AllArgsConstructor
 class BazelStatsVectorPostRequest {
-    String name;
-    String time;
-    String percentage;
+    private String name;
+    private String time;
+    private String percentage;
 }
