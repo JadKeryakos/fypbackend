@@ -34,7 +34,7 @@ public class CppCheckService implements ICppCheckService {
     }
 
     @Override
-    public CppCheck findCheckById(UUID cppCheckId) throws Exception {
+    public CppCheck findCppCheck(UUID cppCheckId) throws Exception {
         Optional<CppCheck> cppCheck = cppCheckRepository.findById(cppCheckId);
         if(cppCheck.isPresent()){
             return cppCheck.get();

@@ -37,7 +37,7 @@ public class CppCheckController {
     @GetMapping("/{cppCheckId}")
     public ResponseEntity findCheckById(@PathVariable UUID cppCheckId){
         try{
-            CppCheck cppCheck = cppCheckService.findCheckById(cppCheckId);
+            CppCheck cppCheck = cppCheckService.findCppCheck(cppCheckId);
             CppCheckResponse response = buildFromCppCheck(cppCheck);
             return ResponseEntity.status(HttpStatus.OK).body(response);
         }catch (Exception e){
@@ -84,23 +84,4 @@ public class CppCheckController {
                 .style(request.getStyle())
                 .build();
      }
-
-     /*    private final CppCheckRepository cppCheckRepository;
-
-    public CppCheckController(CppCheckRepository cppCheckRepository) {
-        this.cppCheckRepository = cppCheckRepository;
-    }
-
-    @PostMapping("")
-    ResponseEntity<CppCheckTest> addCheck(@RequestBody CppCheckTest cppCheck){
-        cppCheckRepository.save(cppCheck);
-        return ResponseEntity.ok(cppCheck);
-    }
-
-    @GetMapping("")
-    ResponseEntity<Iterable<CppCheckTest>> getCheck(){
-        return ResponseEntity.ok(cppCheckRepository.findAll());
-    }*/
-
-
 }
