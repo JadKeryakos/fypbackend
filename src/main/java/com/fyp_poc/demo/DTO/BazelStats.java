@@ -19,7 +19,9 @@ import java.util.UUID;
 @Table(name="bazel_stats")
 public class BazelStats {
     @Id
-    @Column(name="build_name")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private long id;
+    @Column(name="build_name", unique = true)
     @JsonProperty("build_name")
     String buildName;
     @OneToMany(

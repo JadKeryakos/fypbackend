@@ -16,9 +16,8 @@ import java.util.UUID;
 @Table(name="bazel_stats_vector")
 
 public class BazelStatsVector {
+
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name="id")
     private UUID id;
     @Column(name="name")
