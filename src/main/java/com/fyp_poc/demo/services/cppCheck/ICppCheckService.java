@@ -3,6 +3,7 @@ package com.fyp_poc.demo.services.cppCheck;
 import com.fyp_poc.demo.DTO.CppCheck;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public interface ICppCheckService {
@@ -12,7 +13,8 @@ public interface ICppCheckService {
 
     List<CppCheck> findAllChecks();
 
-    CppCheck findCppCheck(UUID cppCheckId) throws Exception;
+    CppCheck findCppCheck(Long cppCheckId) throws Exception;
     List<CppCheck> findLastNChecks(long n);
-    List<CppCheck> getCppCheckStats(List<String> aggregations);
+    Map<String,CppCheck> cppCheckAggregation(List<String> aggregations, Long aggregationSize);
+
 }

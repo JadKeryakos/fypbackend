@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 
-public interface CppCheckRepository extends JpaRepository<CppCheck, UUID> {
+public interface CppCheckRepository extends JpaRepository<CppCheck, Long> {
 
     @Query(value ="select * from cpp_check order by id desc limit :number ;" , nativeQuery = true)
     List<CppCheck> findLastNChecks( @Param("number") long number);

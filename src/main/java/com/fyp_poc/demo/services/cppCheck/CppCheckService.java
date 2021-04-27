@@ -1,29 +1,29 @@
 package com.fyp_poc.demo.services.cppCheck;
 
 import com.fyp_poc.demo.DTO.CppCheck;
-import com.fyp_poc.demo.DTO.CppCheckAggregation;
-import com.fyp_poc.demo.controllers.cppCheck.CppCheckResponse;
-import com.fyp_poc.demo.controllers.functional.CppCheckAggregator;
 import com.fyp_poc.demo.repositories.CppCheckRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
+import java.util.function.Function;
 
 @Service
 public class CppCheckService implements ICppCheckService {
 
 
-    private CppCheckRepository cppCheckRepository;
-
-    @Autowired
-    public CppCheckService(CppCheckRepository cppCheckRepository) {
+    private final CppCheckRepository cppCheckRepository;
+    private final Map<String, Function<Long,CppCheck>> aggregatorMap;
+    public CppCheckService(CppCheckRepository cppCheckRepository, Map<String, Function<Long, CppCheck>> aggregatorMap) {
         this.cppCheckRepository = cppCheckRepository;
+        this.aggregatorMap = aggregatorMap;
+        aggregatorMap.put("sum",this::getCppCheckSum);
+        aggregatorMap.put("max",this::getCppCheckMax);
+        aggregatorMap.put("min",this::getCppCheckMin);
+        aggregatorMap.put("avg",this::getCppCheckAvg);
     }
-
 
     @Override
     public CppCheck addCheck(CppCheck cppCheck) {
@@ -36,7 +36,7 @@ public class CppCheckService implements ICppCheckService {
     }
 
     @Override
-    public CppCheck findCppCheck(UUID cppCheckId) throws Exception {
+    public CppCheck findCppCheck(Long cppCheckId) throws Exception {
         Optional<CppCheck> cppCheck = cppCheckRepository.findById(cppCheckId);
         if(cppCheck.isPresent()){
             return cppCheck.get();
@@ -52,24 +52,30 @@ public class CppCheckService implements ICppCheckService {
         return cppCheckRepository.findLastNChecks(n);
     }
 
-    @Override
-    public List<CppCheck> getCppCheckStats(List<String> aggregations) {
-        return null;
+    private CppCheck getCppCheckSum(Long aggregationSize) {
+        List<CppCheck> checks = cppCheckRepository.findLastNChecks(aggregationSize);
+        return checks.stream().reduce(CppCheck.cppCheckNil(),(x,y)->x.cppCheckReduceSingle(y,Double::sum));
+    }
+    private CppCheck getCppCheckAvg(Long aggregationSize) {
+        List<CppCheck> checks = cppCheckRepository.findLastNChecks(aggregationSize);
+        return CppCheck.cppCheckReduceList(checks,x->x.stream().mapToDouble(y->y).average().orElse(0.0));
+
+    }
+    private CppCheck getCppCheckMax(Long aggregationSize) {
+        List<CppCheck> checks = cppCheckRepository.findLastNChecks(aggregationSize);
+        return CppCheck.cppCheckReduceList(checks,x->x.stream().mapToDouble(y->y).max().orElse(0.0));
+    }
+    private CppCheck getCppCheckMin(Long aggregationSize) {
+        List<CppCheck> checks= cppCheckRepository.findLastNChecks(aggregationSize);
+        return CppCheck.cppCheckReduceList(checks,x->x.stream().mapToDouble(y->y).min().orElse(0.0));
     }
 
-    private CppCheckAggregation cppCheckAggregationSum(long size){
-        List<CppCheck> data = findLastNChecks(10);
-        Long error = data.stream().map(CppCheck::getError).reduce(0L, Long::sum);
-        Long performance = data.stream().map(CppCheck::getPerformance).reduce(0L, Long::sum);
-        Long style = data.stream().map(CppCheck::getStyle).reduce(0L, Long::sum);
-        Long warning = data.stream().map(CppCheck::getWarning).reduce(0L, Long::sum);
-        Long portability = data.stream().map(CppCheck::getPortability).reduce(0L, Long::sum);
-        return new CppCheckAggregation().builder()
-                .error(error)
-                .performance(performance)
-                .style(style)
-                .warning(warning)
-                .portability(portability)
-                .build();
+    @Override
+    public Map<String,CppCheck> cppCheckAggregation(List<String> aggregations, Long aggregationSize) {
+        Map<String,CppCheck> map = new HashMap<>();
+        for(String agg : aggregations){
+            map.put(agg,this.aggregatorMap.get(agg).apply(aggregationSize));
+        }
+        return map;
     }
 }
