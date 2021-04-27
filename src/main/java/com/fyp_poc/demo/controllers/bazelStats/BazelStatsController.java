@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -74,6 +75,10 @@ public class BazelStatsController {
         }
     }
 
+    @PostMapping("/agg")
+    public Map<String,BazelStats> getAggregations(@RequestBody BazelStatsAggregationRequest request){
+        return bazelStatsVectorService.generateAggregations(request.getAggregations(),request.getAggregationSize());
+    }
 
     private BazelStats buildBazelStatsFrom(BazelStatsPostRequest request) {
         return new BazelStats().builder()

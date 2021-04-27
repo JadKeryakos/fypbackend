@@ -28,6 +28,6 @@ public class BazelStatsPostRequest {
 @AllArgsConstructor
 class BazelStatsVectorPostRequest {
     private String name;
-    private String time;
+    private Double time;
     private String percentage;
 }

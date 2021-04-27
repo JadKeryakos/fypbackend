@@ -25,8 +25,14 @@ public class BazelStatsVector {
     String name;
     @Column(name="time")
     @JsonProperty("time")
-    String time;
+    Double time;
     @Column(name="percentage")
     @JsonProperty("percentage")
     String percentage;
+
+    BazelStatsVector(String name , Double time, String percentage){
+        this.name=name;
+        this.time=time;
+        this.percentage=percentage;
+    }
 }
