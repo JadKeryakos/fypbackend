@@ -6,7 +6,13 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 
 @Getter
@@ -14,22 +20,57 @@ import java.util.UUID;
 @Entity
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name="cpp_check")
 public class CppCheck {
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name="id")
-    private UUID id;
+    @GeneratedValue
+    private long id;
+    @Column(name="build_name")
+    @JsonProperty("build-name")
+    private String buildName;
     @JsonProperty("error")
-    long error;
+    double error;
     @JsonProperty("performance")
-    long performance;
+    double performance;
     @JsonProperty("portability")
-    long portability;
+    double portability;
     @JsonProperty("style")
-    long style;
+    double style;
     @JsonProperty("warning")
-    long warning;
+    double warning;
+
+    public CppCheck(long id,String buildName,double error,double performance,double portability,double style, double warning){
+        this.id=0L;
+        this.buildName=buildName;
+        this.portability=portability;
+        this.error=error;
+        this.performance=performance;
+        this.style=style;
+        this.warning=warning;
+
+    }
+
+    public CppCheck cppCheckReduceSingle(CppCheck baseReduce, BiFunction<Double,Double,Double> lambda){
+        return new CppCheck(0L,"BuildName Aggregation",
+                lambda.apply(error,baseReduce.getError()),
+                lambda.apply(performance,baseReduce.getPerformance()),
+                lambda.apply(portability, baseReduce.getPortability()),
+                lambda.apply(style,baseReduce.getStyle()),
+                lambda.apply(warning,baseReduce.getWarning()));
+    }
+
+    public static CppCheck cppCheckReduceList(List<CppCheck> cppChecks,Function<List<Double>,Double> lambda){
+        return new CppCheck(0L,"BuildName Aggregation",
+                lambda.apply(cppChecks.stream().map(CppCheck::getError).collect(Collectors.toList())),
+                lambda.apply(cppChecks.stream().map(CppCheck::getPerformance).collect(Collectors.toList())),
+                lambda.apply(cppChecks.stream().map(CppCheck::getPortability).collect(Collectors.toList())),
+                lambda.apply(cppChecks.stream().map(CppCheck::getStyle).collect(Collectors.toList())),
+                lambda.apply(cppChecks.stream().map(CppCheck::getWarning).collect(Collectors.toList())));
+
+    }
+
+    public static CppCheck cppCheckNil(){
+        return new CppCheck(0L,"",0L,0L,0L,0L,0L);
+    }
 }

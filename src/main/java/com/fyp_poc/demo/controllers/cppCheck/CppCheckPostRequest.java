@@ -1,9 +1,6 @@
 package com.fyp_poc.demo.controllers.cppCheck;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -12,9 +9,10 @@ import java.util.UUID;
 @Builder
 public class CppCheckPostRequest {
 
-    private long error;
-    private long performance;
-    private long portability;
-    private long style;
-    private long warning;
+    private String buildName;
+    private double error;
+    private double performance;
+    private double portability;
+    private double style;
+    private double warning;
 }

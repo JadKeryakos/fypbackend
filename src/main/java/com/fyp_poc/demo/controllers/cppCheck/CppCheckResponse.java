@@ -11,10 +11,11 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class CppCheckResponse {
-    private UUID id;
-    private long error;
-    private long performance;
-    private long portability;
-    private long style;
-    private long warning;
+    private long id;
+    private String buildName;
+    private double error;
+    private double performance;
+    private double portability;
+    private double style;
+    private double warning;
 }

@@ -7,9 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/cppcheck")
@@ -34,8 +32,13 @@ public class CppCheckController {
          }
     }
 
+    @PostMapping("/agg")
+    public Map<String,CppCheck> cppCheckAggregations (@RequestBody CppCheckAggregationRequest request){
+         return cppCheckService.cppCheckAggregation(request.getAggregations(), request.getAggregationSize());
+    }
+
     @GetMapping("/{cppCheckId}")
-    public ResponseEntity findCheckById(@PathVariable UUID cppCheckId){
+    public ResponseEntity findCheckById(@PathVariable Long cppCheckId){
         try{
             CppCheck cppCheck = cppCheckService.findCppCheck(cppCheckId);
             CppCheckResponse response = buildFromCppCheck(cppCheck);
@@ -67,6 +70,7 @@ public class CppCheckController {
     private CppCheckResponse buildFromCppCheck(CppCheck cppCheck) {
         return new CppCheckResponse().builder()
                 .id(cppCheck.getId())
+                .buildName(cppCheck.getBuildName())
                 .error(cppCheck.getError())
                 .performance(cppCheck.getPerformance())
                 .portability(cppCheck.getPortability())
@@ -77,6 +81,7 @@ public class CppCheckController {
 
     private CppCheck buildFromRequest(CppCheckPostRequest request) {
         return new CppCheck().builder()
+                .buildName(request.getBuildName())
                 .error(request.getError())
                 .performance(request.getPerformance())
                 .portability(request.getPortability())
