@@ -41,6 +41,8 @@ public class BazelStatsService implements IBazelStatsService {
         return bazelStatsRepository.findAll();
     }
 
+
+
   /*  @Override
     public List<BazelStats> findTheAggregateOfNBazelStats(String number) {
         List<BazelStats> all = bazelStatsRepository.findAll();

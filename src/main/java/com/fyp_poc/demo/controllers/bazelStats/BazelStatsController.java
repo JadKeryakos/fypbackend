@@ -7,6 +7,7 @@ import com.fyp_poc.demo.DTO.BazelStatsVector;
 import com.fyp_poc.demo.DTO.CppCheck;
 import com.fyp_poc.demo.controllers.cppCheck.CppCheckResponse;
 import com.fyp_poc.demo.services.bazelStats.BazelStatsService;
+import com.fyp_poc.demo.services.bazelStatsVector.BazelStatsVectorService;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +26,15 @@ public class BazelStatsController {
 
 
     private BazelStatsService bazelStatsService;
-
+    private BazelStatsVectorService bazelStatsVectorService;
 
     @Autowired
-    public BazelStatsController(BazelStatsService bazelStatsService) {
+    public BazelStatsController(BazelStatsService bazelStatsService, BazelStatsVectorService bazelStatsVectorService) {
         this.bazelStatsService = bazelStatsService;
-
+        this.bazelStatsVectorService = bazelStatsVectorService;
     }
+
+
 
     /***
      *
@@ -60,6 +63,17 @@ public class BazelStatsController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
+
+    @GetMapping("/{numberOfRows}")
+    public ResponseEntity findTheLatestNBazelStats(@PathVariable long numberOfRows){
+        try{
+            List<BazelStatsVector> bazelStatsList = bazelStatsVectorService.findTheLatestNBazelStats(numberOfRows);
+            return ResponseEntity.status(HttpStatus.OK).body(bazelStatsList);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
 
     private BazelStats buildBazelStatsFrom(BazelStatsPostRequest request) {
         return new BazelStats().builder()

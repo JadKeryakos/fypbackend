@@ -8,4 +8,6 @@ public interface IBazelStatsService {
     BazelStats addStat(BazelStats bazelStats);
 
     List<BazelStats> findAllBazelStats();
+
+
 }
