@@ -1,6 +1,8 @@
 package com.fyp_poc.demo.DTO;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -25,6 +27,7 @@ public class CppCheck {
     @Id
     @Column(name="id")
     @GeneratedValue
+    @JsonIgnore
     private long id;
     @Column(name="build_name")
     @JsonProperty("build-name")

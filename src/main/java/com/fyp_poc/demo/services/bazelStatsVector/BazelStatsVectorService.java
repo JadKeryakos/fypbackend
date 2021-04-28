@@ -47,12 +47,10 @@ public class BazelStatsVectorService implements IBazelStatsVectorService{
         HashMap<String,List<BazelStatsVector>> map = new HashMap<>();
         for(BazelStatsVector vector : bazelStatsVectors){
             String name = vector.getName();
-            if(map.containsKey(name)){
-                map.get(name).add(vector);
+            if (!map.containsKey(name)) {
+                map.put(name, new ArrayList<>());
             }
-            else{
-                map.put(name,new ArrayList<>());
-            }
+            map.get(name).add(vector);
         }
         return map;
     }
