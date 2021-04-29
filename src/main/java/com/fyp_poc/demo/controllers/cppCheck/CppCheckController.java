@@ -59,6 +59,18 @@ public class CppCheckController {
         }
     }
 
+    @GetMapping("/last/{n}")
+    public ResponseEntity<?> findNChecks(@RequestParam Long n){
+         try{
+             List<CppCheck> cppChecks = cppCheckService.findLastNChecks(n);
+             List<CppCheckResponse> responseList = buildListFromCppCheck(cppChecks);
+             return ResponseEntity.status(HttpStatus.OK).body(responseList);
+         }
+         catch (Exception e){
+             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+         }
+    }
+
     private List<CppCheckResponse> buildListFromCppCheck(List<CppCheck> listOfCppChecks) {
         List<CppCheckResponse> responseList = new ArrayList<>();
         for (CppCheck cppCheck : listOfCppChecks) {

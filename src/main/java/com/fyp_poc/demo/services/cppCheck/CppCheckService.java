@@ -47,7 +47,8 @@ public class CppCheckService implements ICppCheckService {
 
     }
 
-    private List<CppCheck> findLastNChecks(long n) {
+    @Override
+    public List<CppCheck> findLastNChecks(long n) {
         return cppCheckRepository.findLastNChecks(n);
     }
 

@@ -12,5 +12,5 @@ public interface ICppCheckService {
     List<CppCheck> findAllChecks();
     CppCheck findCppCheck(Long cppCheckId) throws Exception;
     Map<String,CppCheck> cppCheckAggregation(List<String> aggregations, Long aggregationSize);
-
+    public List<CppCheck> findLastNChecks(long n);
 }
