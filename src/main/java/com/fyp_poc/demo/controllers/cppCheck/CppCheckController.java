@@ -22,7 +22,7 @@ public class CppCheckController {
 
 
     @PostMapping("")
-    public ResponseEntity addCheck(@RequestBody CppCheckPostRequest request){
+    public ResponseEntity<?> addCheck(@RequestBody CppCheckPostRequest request){
          try{
              CppCheck cppCheck = cppCheckService.addCheck(buildFromRequest(request));
              CppCheckResponse response = buildFromCppCheck(cppCheck);
@@ -38,7 +38,7 @@ public class CppCheckController {
     }
 
     @GetMapping("/{cppCheckId}")
-    public ResponseEntity findCheckById(@PathVariable Long cppCheckId){
+    public ResponseEntity<?> findCheckById(@PathVariable Long cppCheckId){
         try{
             CppCheck cppCheck = cppCheckService.findCppCheck(cppCheckId);
             CppCheckResponse response = buildFromCppCheck(cppCheck);
@@ -49,7 +49,7 @@ public class CppCheckController {
     }
 
     @GetMapping("")
-    public ResponseEntity findAllChecks(){
+    public ResponseEntity<?> findAllChecks(){
         try{
             List<CppCheck> cppCheck = cppCheckService.findAllChecks();
             List<CppCheckResponse> responseList = buildListFromCppCheck(cppCheck);
@@ -68,7 +68,7 @@ public class CppCheckController {
     }
 
     private CppCheckResponse buildFromCppCheck(CppCheck cppCheck) {
-        return new CppCheckResponse().builder()
+        return  CppCheckResponse.builder()
                 .id(cppCheck.getId())
                 .buildName(cppCheck.getBuildName())
                 .error(cppCheck.getError())
@@ -80,7 +80,7 @@ public class CppCheckController {
      }
 
     private CppCheck buildFromRequest(CppCheckPostRequest request) {
-        return new CppCheck().builder()
+        return CppCheck.builder()
                 .buildName(request.getBuildName())
                 .error(request.getError())
                 .performance(request.getPerformance())
