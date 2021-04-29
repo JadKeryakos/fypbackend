@@ -40,7 +40,7 @@ public class BazelStatsService implements IBazelStatsService {
     }
 
     @Override
-    public List<BazelStats> findByBuildName(String buildName) {
+    public BazelStats findByBuildName(String buildName) {
         return bazelStatsRepository.findByBuildName(buildName);
     }
 
@@ -48,6 +48,16 @@ public class BazelStatsService implements IBazelStatsService {
     public List<String> findLastNBazelBuildNames(long numberOfRows) {
         List<String> lastNBazelBuildNames = bazelStatsRepository.findLastNBazelBuildNames(numberOfRows);
         return lastNBazelBuildNames;
+    }
+
+    @Override
+    public List<BazelStats> findListOfBazelStatsByBuildName(ArrayList<String> listOfBuildNames) {
+        List<BazelStats> listOfStats = new ArrayList<>();
+        for (String bazelBuild: listOfBuildNames){
+            BazelStats byBuildName = bazelStatsRepository.findByBuildName(bazelBuild);
+            listOfStats.add(byBuildName);
+        }
+        return listOfStats;
     }
 
 

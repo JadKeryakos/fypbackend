@@ -87,11 +87,11 @@ public class BazelStatsController {
         }
     }
 
-    @GetMapping("/build/{buildName}")
-    public ResponseEntity findBazelStatsByBuildName(@PathVariable String buildName){
+    @PostMapping("/build")
+    public ResponseEntity findListOfBazelStatsByBuildName(@RequestBody ListOfBazelStatsRequest request){
         try{
-            System.out.println(buildName);
-            List<BazelStats> bazelStatsList = bazelStatsService.findByBuildName(buildName);
+            System.out.println(request.getListOfBuildNames().get(0));
+            List<BazelStats> bazelStatsList = bazelStatsService.findListOfBazelStatsByBuildName(request.getListOfBuildNames());
             return ResponseEntity.status(HttpStatus.OK).body(bazelStatsList);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());

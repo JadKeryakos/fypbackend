@@ -14,7 +14,7 @@ import java.util.UUID;
 public interface BazelStatsRepository extends JpaRepository<BazelStats, UUID> {
 
 
-   List<BazelStats> findByBuildName (String buildName);
+   BazelStats findByBuildName (String buildName);
 
    @Query(value ="select build_name from bazel_stats limit :numberOfRows"
            , nativeQuery = true)
