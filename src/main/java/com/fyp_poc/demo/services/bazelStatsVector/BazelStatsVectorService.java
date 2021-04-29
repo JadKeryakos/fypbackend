@@ -42,6 +42,8 @@ public class BazelStatsVectorService implements IBazelStatsVectorService{
        return res;
     }
 
+
+
     private Map<String, List<BazelStatsVector>> generateRawStats(Long aggregationSize) {
         List<BazelStatsVector> bazelStatsVectors = findTheLatestNBazelStats(aggregationSize);
         HashMap<String,List<BazelStatsVector>> map = new HashMap<>();
@@ -82,6 +84,7 @@ public class BazelStatsVectorService implements IBazelStatsVectorService{
     private Double avg(List<BazelStatsVector> list){
         return list.stream().map(BazelStatsVector::getTime).mapToDouble(x->x).average().orElse(0.0);
     }
+
 
 
 }

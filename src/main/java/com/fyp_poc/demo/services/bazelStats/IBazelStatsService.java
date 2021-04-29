@@ -10,4 +10,7 @@ public interface IBazelStatsService {
     List<BazelStats> findAllBazelStats();
 
 
+    List<BazelStats> findByBuildName(String buildName);
+
+    List<?> findLastNBazelBuildNames(long numberOfRows);
 }

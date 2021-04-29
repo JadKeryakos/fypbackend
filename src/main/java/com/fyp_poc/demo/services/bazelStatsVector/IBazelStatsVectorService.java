@@ -10,4 +10,6 @@ public interface IBazelStatsVectorService {
 
     List<BazelStatsVector> findTheLatestNBazelStats(long numberOfRows);
     Map<String,BazelStats> generateAggregations(List<String> aggregations,Long aggregationSize);
+
+
 }

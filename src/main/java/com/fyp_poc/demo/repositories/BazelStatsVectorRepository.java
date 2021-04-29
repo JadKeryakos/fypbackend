@@ -15,4 +15,6 @@ public interface BazelStatsVectorRepository extends JpaRepository<BazelStatsVect
             , nativeQuery = true)
     List<BazelStatsVector> findTheLatestNBazelStats(@Param("number") long number);
 
+
+
 }

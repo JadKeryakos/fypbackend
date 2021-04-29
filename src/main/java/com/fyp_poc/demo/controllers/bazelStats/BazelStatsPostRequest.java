@@ -1,13 +1,9 @@
 package com.fyp_poc.demo.controllers.bazelStats;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Setter

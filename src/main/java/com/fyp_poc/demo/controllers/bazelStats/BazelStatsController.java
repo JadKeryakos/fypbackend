@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -69,6 +70,28 @@ public class BazelStatsController {
     public ResponseEntity findTheLatestNBazelStats(@PathVariable long numberOfRows){
         try{
             List<BazelStatsVector> bazelStatsList = bazelStatsVectorService.findTheLatestNBazelStats(numberOfRows);
+            return ResponseEntity.status(HttpStatus.OK).body(bazelStatsList);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/build-names/{numberOfRows}")
+    public ResponseEntity findLastNBazelBuildNames(@PathVariable long numberOfRows){
+        try{
+            List<String> bazelStatsList = bazelStatsService.findLastNBazelBuildNames(numberOfRows);
+            List<BazelStatsBuildNamesResponse> responses= bazelStatsList.stream().map(name-> BazelStatsBuildNamesResponse.builder().buildName(name).build()).collect(Collectors.toList());
+            return ResponseEntity.status(HttpStatus.OK).body(responses);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/build/{buildName}")
+    public ResponseEntity findBazelStatsByBuildName(@PathVariable String buildName){
+        try{
+            System.out.println(buildName);
+            List<BazelStats> bazelStatsList = bazelStatsService.findByBuildName(buildName);
             return ResponseEntity.status(HttpStatus.OK).body(bazelStatsList);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
