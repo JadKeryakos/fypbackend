@@ -1,6 +1,7 @@
 package com.fyp_poc.demo.controllers.cppCheck;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import java.util.UUID;
@@ -11,6 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class CppCheckResponse {
+    @JsonIgnore
     private long id;
     private String buildName;
     private double error;

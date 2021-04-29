@@ -22,7 +22,7 @@ public class CppCheckController {
 
 
     @PostMapping("")
-    public ResponseEntity addCheck(@RequestBody CppCheckPostRequest request){
+    public ResponseEntity<?> addCheck(@RequestBody CppCheckPostRequest request){
          try{
              CppCheck cppCheck = cppCheckService.addCheck(buildFromRequest(request));
              CppCheckResponse response = buildFromCppCheck(cppCheck);
@@ -38,7 +38,7 @@ public class CppCheckController {
     }
 
     @GetMapping("/{cppCheckId}")
-    public ResponseEntity findCheckById(@PathVariable Long cppCheckId){
+    public ResponseEntity<?> findCheckById(@PathVariable Long cppCheckId){
         try{
             CppCheck cppCheck = cppCheckService.findCppCheck(cppCheckId);
             CppCheckResponse response = buildFromCppCheck(cppCheck);
@@ -49,7 +49,7 @@ public class CppCheckController {
     }
 
     @GetMapping("")
-    public ResponseEntity findAllChecks(){
+    public ResponseEntity<?> findAllChecks(){
         try{
             List<CppCheck> cppCheck = cppCheckService.findAllChecks();
             List<CppCheckResponse> responseList = buildListFromCppCheck(cppCheck);
@@ -57,6 +57,18 @@ public class CppCheckController {
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
+    }
+
+    @GetMapping("/last/{n}")
+    public ResponseEntity<?> findNChecks(@RequestParam Long n){
+         try{
+             List<CppCheck> cppChecks = cppCheckService.findLastNChecks(n);
+             List<CppCheckResponse> responseList = buildListFromCppCheck(cppChecks);
+             return ResponseEntity.status(HttpStatus.OK).body(responseList);
+         }
+         catch (Exception e){
+             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+         }
     }
 
     private List<CppCheckResponse> buildListFromCppCheck(List<CppCheck> listOfCppChecks) {
@@ -68,8 +80,7 @@ public class CppCheckController {
     }
 
     private CppCheckResponse buildFromCppCheck(CppCheck cppCheck) {
-        return new CppCheckResponse().builder()
-                .id(cppCheck.getId())
+        return  CppCheckResponse.builder()
                 .buildName(cppCheck.getBuildName())
                 .error(cppCheck.getError())
                 .performance(cppCheck.getPerformance())
@@ -80,7 +91,7 @@ public class CppCheckController {
      }
 
     private CppCheck buildFromRequest(CppCheckPostRequest request) {
-        return new CppCheck().builder()
+        return CppCheck.builder()
                 .buildName(request.getBuildName())
                 .error(request.getError())
                 .performance(request.getPerformance())
