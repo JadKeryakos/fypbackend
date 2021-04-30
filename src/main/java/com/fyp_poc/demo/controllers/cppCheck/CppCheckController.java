@@ -73,12 +73,21 @@ public class CppCheckController {
     }
 
     @PostMapping("/build-names")
-    public ResponseEntity<?> buildListByBuildNames(List<String> buildNames){
+    public ResponseEntity<?> buildListByBuildNames(@RequestBody CppCheckBuildNamesRequest buildNamesRequest){
          try{
-             List<CppCheckResponse> responseList = buildListFromCppCheck(cppCheckService.findCppCheckByBuildNames(buildNames));
+             List<CppCheckResponse> responseList = buildListFromCppCheck(cppCheckService.findCppCheckByBuildNames(buildNamesRequest.getBuildNames()));
              return ResponseEntity.ok(responseList);
          }
          catch (Exception e){
+             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+         }
+    }
+
+    @GetMapping("/build-names/last/{n}")
+    public ResponseEntity<?> lastNbuildNames(@PathVariable long n){
+         try{
+             return ResponseEntity.ok(cppCheckService.findLastNBuildNames(n));
+         }catch (Exception e){
              return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
          }
     }

@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.UUID;
 
 
 public interface CppCheckRepository extends JpaRepository<CppCheck, Long> {
@@ -14,6 +13,9 @@ public interface CppCheckRepository extends JpaRepository<CppCheck, Long> {
     @Query(value ="select * from cpp_check order by id desc limit :number ;" , nativeQuery = true)
     List<CppCheck> findLastNChecks( @Param("number") long number);
 
-    @Query(value = "select * from cpp_check where build_name in :in_args ; ", nativeQuery = true)
-    List<CppCheck> findChecksByBuildNames(@Param("in_args") String inArgs);
+    @Query(value = " select * from cpp_check where build_name in (:names) ", nativeQuery = true)
+    List<CppCheck> findChecksByBuildNames (@Param("names") List<String> names);
+
+    @Query(value = " select build_name from cpp_check order by id desc limit :number ", nativeQuery = true)
+    List<String> findLastCheckNames (@Param("number") long number);
 }

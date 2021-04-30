@@ -14,4 +14,5 @@ public interface ICppCheckService {
     Map<String,CppCheck> cppCheckAggregation(List<String> aggregations, Long aggregationSize);
     List<CppCheck> findLastNChecks(long n);
     List<CppCheck> findCppCheckByBuildNames(List<String> buildNames);
+    List<String> findLastNBuildNames(long number);
 }

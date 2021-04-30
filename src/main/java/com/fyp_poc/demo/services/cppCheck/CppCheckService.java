@@ -55,8 +55,12 @@ public class CppCheckService implements ICppCheckService {
 
     @Override
     public List<CppCheck> findCppCheckByBuildNames(List<String> buildNames) {
-        String inArgs = SqlUtils.generateInArgument(buildNames);
-        return cppCheckRepository.findChecksByBuildNames(inArgs);
+        return cppCheckRepository.findChecksByBuildNames(buildNames);
+    }
+
+    @Override
+    public List<String> findLastNBuildNames(long number) {
+        return cppCheckRepository.findLastCheckNames(number);
     }
 
     private CppCheck getCppCheckSum(Long aggregationSize) {
