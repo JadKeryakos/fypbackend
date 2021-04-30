@@ -2,6 +2,7 @@ package com.fyp_poc.demo.services.cppCheck;
 
 import com.fyp_poc.demo.DTO.CppCheck;
 import com.fyp_poc.demo.repositories.CppCheckRepository;
+import com.fyp_poc.demo.utils.SqlUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -50,6 +51,12 @@ public class CppCheckService implements ICppCheckService {
     @Override
     public List<CppCheck> findLastNChecks(long n) {
         return cppCheckRepository.findLastNChecks(n);
+    }
+
+    @Override
+    public List<CppCheck> findCppCheckByBuildNames(List<String> buildNames) {
+        String inArgs = SqlUtils.generateInArgument(buildNames);
+        return cppCheckRepository.findChecksByBuildNames(inArgs);
     }
 
     private CppCheck getCppCheckSum(Long aggregationSize) {

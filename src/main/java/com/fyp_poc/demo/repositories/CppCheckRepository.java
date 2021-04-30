@@ -13,4 +13,7 @@ public interface CppCheckRepository extends JpaRepository<CppCheck, Long> {
 
     @Query(value ="select * from cpp_check order by id desc limit :number ;" , nativeQuery = true)
     List<CppCheck> findLastNChecks( @Param("number") long number);
+
+    @Query(value = "select * from cpp_check where build_name in :in_args ; ", nativeQuery = true)
+    List<CppCheck> findChecksByBuildNames(@Param("in_args") String inArgs);
 }
