@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/cppcheck")
@@ -62,7 +63,7 @@ public class CppCheckController {
     @GetMapping("/last/{n}")
     public ResponseEntity<?> findNChecks(@RequestParam Long n){
          try{
-             List<CppCheck> cppChecks = cppCheckService.findLastNChecks(n);
+             List<CppCheck> cppChecks = cppCheckService.findLastNChecks(n).stream().sorted(Comparator.comparing(CppCheck::getId)).collect(Collectors.toList());
              List<CppCheckResponse> responseList = buildListFromCppCheck(cppChecks);
              return ResponseEntity.status(HttpStatus.OK).body(responseList);
          }
