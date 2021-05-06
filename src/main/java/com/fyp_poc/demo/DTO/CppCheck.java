@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 @Entity
 @Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name="cpp_check")
 public class CppCheck {
     @Id
@@ -42,6 +43,10 @@ public class CppCheck {
     double style;
     @JsonProperty("warning")
     double warning;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "build_id", referencedColumnName = "id",unique=true)
+    private Build build;
 
     public CppCheck(long id,String buildName,double error,double performance,double portability,double style, double warning){
         this.id=0L;

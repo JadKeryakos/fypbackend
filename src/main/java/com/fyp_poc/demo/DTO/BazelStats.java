@@ -32,5 +32,8 @@ public class BazelStats {
     @JsonProperty("payload")
     private List<BazelStatsVector> bazelStatsVectorList;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "build_id", referencedColumnName = "id",unique=true)
+    private Build build;
 }
 
