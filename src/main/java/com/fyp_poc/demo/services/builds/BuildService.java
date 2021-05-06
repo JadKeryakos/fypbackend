@@ -1,7 +1,6 @@
 package com.fyp_poc.demo.services.builds;
 
-import com.fyp_poc.demo.DTO.BazelStats;
-import com.fyp_poc.demo.DTO.Builds;
+import com.fyp_poc.demo.DTO.Build;
 
 import com.fyp_poc.demo.repositories.BuildsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,7 @@ public class BuildService implements IBuildService {
     }
 
     @Override
-    public List<Builds> findAllBazelBuilds() {
+    public List<Build> findAllBazelBuilds() {
         return buildsRepository.findAll();
     }
 }

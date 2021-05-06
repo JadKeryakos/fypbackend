@@ -14,14 +14,14 @@ import java.util.Date;
 @AllArgsConstructor
 @Entity(name="builds")
 @Table(name="builds")
-public class Builds {
+public class Build {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long id;
     @Column(name="build_name", unique = true)
     @JsonProperty("build_name")
-    String buildName;
+    private String buildName;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
