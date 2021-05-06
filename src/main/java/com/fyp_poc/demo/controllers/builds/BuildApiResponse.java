@@ -10,7 +10,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-public class BuildGetApiResponse {
+public class BuildApiResponse {
 
     private long id;
     private String buildName;

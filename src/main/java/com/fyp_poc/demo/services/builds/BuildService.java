@@ -22,4 +22,9 @@ public class BuildService implements IBuildService {
     public List<Build> findAllBazelBuilds() {
         return buildsRepository.findAll();
     }
+
+    @Override
+    public Build createBuild(Build build) {
+        return buildsRepository.save(build);
+    }
 }
