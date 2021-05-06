@@ -2,7 +2,9 @@ package com.fyp_poc.demo.services.bazelStatsVector;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fyp_poc.demo.DTO.BazelStats;
+import com.fyp_poc.demo.DTO.BazelStatsAgg;
 import com.fyp_poc.demo.DTO.BazelStatsVector;
+import com.fyp_poc.demo.DTO.BazelStatsVectorAgg;
 import com.fyp_poc.demo.repositories.BazelStatsVectorRepository;
 import org.springframework.stereotype.Service;
 
@@ -34,8 +36,8 @@ public class BazelStatsVectorService implements IBazelStatsVectorService{
     }
 
     @Override
-    public Map<String, BazelStats> generateAggregations(List<String> aggregations, Long aggregationSize) {
-       Map<String,BazelStats> res = new HashMap<>();
+    public Map<String, BazelStatsAgg> generateAggregations(List<String> aggregations, Long aggregationSize) {
+       Map<String,BazelStatsAgg> res = new HashMap<>();
        for(String agg : aggregations){
            res.put(agg,generateAggregation(generateRawStats(aggregationSize), aggregatorMap.get(agg)));
        }
@@ -57,19 +59,20 @@ public class BazelStatsVectorService implements IBazelStatsVectorService{
         return map;
     }
 
-    private BazelStats generateAggregation(Map<String,List<BazelStatsVector>> map , Function<List<BazelStatsVector> , Double> f){
+    private BazelStatsAgg generateAggregation(Map<String,List<BazelStatsVector>> map , Function<List<BazelStatsVector> , Double> f){
         HashMap<String,Double> res = new HashMap<>();
         for(String name : map.keySet()){
             res.put(name,f.apply(map.get(name)));
         }
-        BazelStats bazelStats = new BazelStats();
-        bazelStats.setBuildName("Aggregation");
-        List<BazelStatsVector> bazelStatsVectors = new ArrayList<>();
+        BazelStatsAgg bazelStatsAgg = new BazelStatsAgg();
+
+
+        List<BazelStatsVectorAgg> bazelStatsVectorsAgg = new ArrayList<>();
         for(String prop : res.keySet()){
-            bazelStatsVectors.add(new BazelStatsVector(null,prop,res.get(prop),"%"));
+            bazelStatsVectorsAgg.add(new BazelStatsVectorAgg(prop,res.get(prop)));
         }
-        bazelStats.setBazelStatsVectorList(bazelStatsVectors);
-        return bazelStats;
+        bazelStatsAgg.setBazelStatsVectorList(bazelStatsVectorsAgg);
+        return bazelStatsAgg;
     }
 
     private Double sum(List<BazelStatsVector> list){

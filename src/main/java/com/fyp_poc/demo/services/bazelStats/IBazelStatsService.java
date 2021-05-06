@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface IBazelStatsService {
-    BazelStats addStat(BazelStats bazelStats);
+    BazelStats addStat(long buildId,BazelStats bazelStats);
 
     List<BazelStats> findAllBazelStats();
 

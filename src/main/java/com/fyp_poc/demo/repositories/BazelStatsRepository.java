@@ -13,11 +13,13 @@ import java.util.UUID;
 
 public interface BazelStatsRepository extends JpaRepository<BazelStats, UUID> {
 
-
+/*
    BazelStats findByBuildName (String buildName);
 
    @Query(value ="select build_name from bazel_stats order by id desc limit :numberOfRows"
            , nativeQuery = true)
    List<String> findLastNBazelBuildNames(@Param("numberOfRows") long numberOfRows);
+ */
 }
+
 

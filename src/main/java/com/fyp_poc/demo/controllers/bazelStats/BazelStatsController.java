@@ -3,6 +3,7 @@ package com.fyp_poc.demo.controllers.bazelStats;
 import com.fyp_poc.demo.DTO.BazelStats;
 
 
+import com.fyp_poc.demo.DTO.BazelStatsAgg;
 import com.fyp_poc.demo.DTO.BazelStatsVector;
 import com.fyp_poc.demo.DTO.CppCheck;
 import com.fyp_poc.demo.controllers.cppCheck.CppCheckResponse;
@@ -46,10 +47,10 @@ public class BazelStatsController {
      *
      */
 
-    @PostMapping("")
-    public ResponseEntity addStat(@RequestBody BazelStatsPostRequest request){
+    @PostMapping("/builds/{buildId}/bazel-stats")
+    public ResponseEntity addStat(@PathVariable("buildId") long buildId, @RequestBody BazelStatsPostRequest request){
         try{
-            BazelStats bazelStats = bazelStatsService.addStat(buildBazelStatsFrom(request));
+            BazelStats bazelStats = bazelStatsService.addStat(buildId,buildBazelStatsFrom(request));
             return ResponseEntity.status(HttpStatus.OK).body(bazelStats);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -76,6 +77,7 @@ public class BazelStatsController {
         }
     }
 
+    /*
     @GetMapping("/build-names/{numberOfRows}")
     public ResponseEntity findLastNBazelBuildNames(@PathVariable long numberOfRows){
         try{
@@ -86,6 +88,8 @@ public class BazelStatsController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
+
+     */
 
     @PostMapping("/build")
     public ResponseEntity findListOfBazelStatsByBuildName(@RequestBody ListOfBazelStatsRequest request){
@@ -99,13 +103,12 @@ public class BazelStatsController {
     }
 
     @PostMapping("/agg")
-    public Map<String,BazelStats> getAggregations(@RequestBody BazelStatsAggregationRequest request){
+    public Map<String, BazelStatsAgg> getAggregations(@RequestBody BazelStatsAggregationRequest request){
         return bazelStatsVectorService.generateAggregations(request.getAggregations(),request.getAggregationSize());
     }
 
     private BazelStats buildBazelStatsFrom(BazelStatsPostRequest request) {
         return new BazelStats().builder()
-                .buildName(request.getBuildName())
                 .bazelStatsVectorList(buildStatsVectorListFrom(request.getBazelStatsVectorList()))
                 .build();
     }
