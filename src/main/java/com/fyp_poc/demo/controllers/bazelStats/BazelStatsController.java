@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @RestController
-@RequestMapping("/bazel-stats")
+@RequestMapping("")
 public class BazelStatsController {
 
 
@@ -57,7 +57,7 @@ public class BazelStatsController {
         }
     }
 
-    @GetMapping("")
+    @GetMapping("/bazel-stats")
     public ResponseEntity findAllBazelStats(){
         try{
             List<BazelStats> bazelStatsList = bazelStatsService.findAllBazelStats();
@@ -67,7 +67,7 @@ public class BazelStatsController {
         }
     }
 
-    @GetMapping("/{numberOfRows}")
+    @GetMapping("/bazel-stats/{numberOfRows}")
     public ResponseEntity findTheLatestNBazelStats(@PathVariable long numberOfRows){
         try{
             List<BazelStatsVector> bazelStatsList = bazelStatsVectorService.findTheLatestNBazelStats(numberOfRows);
@@ -91,7 +91,7 @@ public class BazelStatsController {
 
      */
 
-    @PostMapping("/build")
+ /*   @PostMapping("/build")
     public ResponseEntity findListOfBazelStatsByBuildName(@RequestBody ListOfBazelStatsRequest request){
         try{
             System.out.println(request.getListOfBuildNames().get(0));
@@ -102,7 +102,9 @@ public class BazelStatsController {
         }
     }
 
-    @PostMapping("/agg")
+  */
+
+    @PostMapping("bazel-stats/agg")
     public Map<String, BazelStatsAgg> getAggregations(@RequestBody BazelStatsAggregationRequest request){
         return bazelStatsVectorService.generateAggregations(request.getAggregations(),request.getAggregationSize());
     }
