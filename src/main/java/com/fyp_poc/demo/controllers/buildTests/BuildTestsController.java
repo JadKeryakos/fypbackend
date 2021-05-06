@@ -5,9 +5,7 @@ import com.fyp_poc.demo.services.buildTests.IBuildTestsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 
@@ -19,6 +17,53 @@ public class BuildTestsController {
     public BuildTestsController(IBuildTestsService buildTestsService) {
         this.buildTestsService = buildTestsService;
     }
+
+
+    @GetMapping("/tests/{testId}")
+    public ResponseEntity findTestById(@PathVariable("buildId") long buildId) {
+        try {
+            BuildTests buildTest = buildTestsService.findBuildTestByBuildId(buildId);
+            BuildTestApiResponse response = buildResponseFromBuildTest(buildTest);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/tests")
+    public ResponseEntity findAllTests(@PathVariable("buildId") long buildId) {
+        try {
+            BuildTests buildTest = buildTestsService.findBuildTestByBuildId(buildId);
+            BuildTestApiResponse response = buildResponseFromBuildTest(buildTest);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+
+    @PostMapping("/builds/{buildId}/test")
+    public ResponseEntity addTestForBuildUsingBuildId(@PathVariable("buildId") long buildId, @RequestBody BuildTestApiRequest request) {
+        try {
+            System.out.println(buildId);
+            System.out.println(request.getTestFailed());
+            System.out.println(request.getTestPassed());
+            System.out.println("------------------------------------------------------------------------------");
+            BuildTests buildTest = buildTestsService.addTestForBuildUsingBuildId(buildId, buildBuildTestsFrom(request));
+            BuildTestApiResponse response = buildResponseFromBuildTest(buildTest);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    private BuildTests buildBuildTestsFrom(BuildTestApiRequest request) {
+        return BuildTests.builder()
+                .testFailed(request.getTestFailed())
+                .testPassed(request.getTestPassed())
+                .build();
+    }
+
 
     @GetMapping("/builds/{buildId}/test")
     public ResponseEntity findBuildTestsByBuildId(@PathVariable("buildId") long buildId) {
@@ -36,6 +81,7 @@ public class BuildTestsController {
                 .id(buildTest.getId())
                 .testFailed(buildTest.getTestFailed())
                 .testPassed(buildTest.getTestPassed())
+                .build(buildTest.getBuild())
                 .build();
     }
 

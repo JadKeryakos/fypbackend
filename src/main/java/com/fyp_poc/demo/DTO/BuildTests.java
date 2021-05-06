@@ -17,6 +17,7 @@ public class BuildTests {
 
     @Id
     @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(name="test_failed")
     private long testFailed;
@@ -24,7 +25,7 @@ public class BuildTests {
     private long testPassed;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "build_id", referencedColumnName = "id")
+    @JoinColumn(name = "build_id", referencedColumnName = "id",unique=true)
     private Build build;
 
 }

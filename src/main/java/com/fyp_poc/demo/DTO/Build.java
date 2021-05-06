@@ -12,6 +12,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
+@ToString
 @Entity(name = "builds")
 @Table(name = "builds")
 public class Build {

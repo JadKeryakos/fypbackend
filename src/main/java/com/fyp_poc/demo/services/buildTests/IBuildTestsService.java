@@ -8,4 +8,6 @@ import java.util.List;
 public interface IBuildTestsService {
 
     BuildTests findBuildTestByBuildId(long buildId);
+
+    BuildTests addTestForBuildUsingBuildId(long buildId, BuildTests buildTests);
 }
