@@ -1,0 +1,42 @@
+package com.fyp_poc.demo.controllers.buildTests;
+
+import com.fyp_poc.demo.DTO.BuildTests;
+import com.fyp_poc.demo.services.buildTests.IBuildTestsService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+
+public class BuildTestsController {
+
+    private final IBuildTestsService buildTestsService;
+
+    @Autowired
+    public BuildTestsController(IBuildTestsService buildTestsService) {
+        this.buildTestsService = buildTestsService;
+    }
+
+    @GetMapping("/builds/{buildId}/test")
+    public ResponseEntity findBuildTestsByBuildId(@PathVariable("buildId") long buildId) {
+        try {
+            BuildTests buildTest = buildTestsService.findBuildTestByBuildId(buildId);
+            BuildTestApiResponse response = buildResponseFromBuildTest(buildTest);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    private BuildTestApiResponse buildResponseFromBuildTest(BuildTests buildTest) {
+        return BuildTestApiResponse.builder()
+                .id(buildTest.getId())
+                .testFailed(buildTest.getTestFailed())
+                .testPassed(buildTest.getTestPassed())
+                .build();
+    }
+
+}
