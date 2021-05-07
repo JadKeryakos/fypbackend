@@ -9,7 +9,7 @@ import lombok.*;
 @Builder
 public class CppCheckPostRequest {
 
-    private String buildName;
+
     private double error;
     private double performance;
     private double portability;

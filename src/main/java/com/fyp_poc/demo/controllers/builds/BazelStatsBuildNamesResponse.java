@@ -1,4 +1,4 @@
-package com.fyp_poc.demo.controllers.bazelStats;
+package com.fyp_poc.demo.controllers.builds;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

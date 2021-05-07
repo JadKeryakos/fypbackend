@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 @Entity
 @Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name="cpp_check")
 public class CppCheck {
     @Id
@@ -29,9 +30,6 @@ public class CppCheck {
     @GeneratedValue
     @JsonIgnore
     private long id;
-    @Column(name="build_name")
-    @JsonProperty("build-name")
-    private String buildName;
     @JsonProperty("error")
     double error;
     @JsonProperty("performance")
@@ -43,37 +41,9 @@ public class CppCheck {
     @JsonProperty("warning")
     double warning;
 
-    public CppCheck(long id,String buildName,double error,double performance,double portability,double style, double warning){
-        this.id=0L;
-        this.buildName=buildName;
-        this.portability=portability;
-        this.error=error;
-        this.performance=performance;
-        this.style=style;
-        this.warning=warning;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "build_id", referencedColumnName = "id",unique=true)
+    private Build build;
 
-    }
 
-    public CppCheck cppCheckReduceSingle(CppCheck baseReduce, BiFunction<Double,Double,Double> lambda){
-        return new CppCheck(0L,"BuildName Aggregation",
-                lambda.apply(error,baseReduce.getError()),
-                lambda.apply(performance,baseReduce.getPerformance()),
-                lambda.apply(portability, baseReduce.getPortability()),
-                lambda.apply(style,baseReduce.getStyle()),
-                lambda.apply(warning,baseReduce.getWarning()));
-    }
-
-    public static CppCheck cppCheckReduceList(List<CppCheck> cppChecks,Function<List<Double>,Double> lambda){
-        return new CppCheck(0L,"BuildName Aggregation",
-                lambda.apply(cppChecks.stream().map(CppCheck::getError).collect(Collectors.toList())),
-                lambda.apply(cppChecks.stream().map(CppCheck::getPerformance).collect(Collectors.toList())),
-                lambda.apply(cppChecks.stream().map(CppCheck::getPortability).collect(Collectors.toList())),
-                lambda.apply(cppChecks.stream().map(CppCheck::getStyle).collect(Collectors.toList())),
-                lambda.apply(cppChecks.stream().map(CppCheck::getWarning).collect(Collectors.toList())));
-
-    }
-
-    public static CppCheck cppCheckNil(){
-        return new CppCheck(0L,"",0L,0L,0L,0L,0L);
-    }
 }
