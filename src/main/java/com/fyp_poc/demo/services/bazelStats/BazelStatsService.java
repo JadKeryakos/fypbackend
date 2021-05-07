@@ -2,7 +2,9 @@ package com.fyp_poc.demo.services.bazelStats;
 
 import com.fyp_poc.demo.DTO.BazelStats;
 import com.fyp_poc.demo.DTO.BazelStatsVector;
+import com.fyp_poc.demo.DTO.Build;
 import com.fyp_poc.demo.repositories.BazelStatsRepository;
+import com.fyp_poc.demo.repositories.BuildsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,15 +13,21 @@ import java.util.*;
 @Service
 public class BazelStatsService implements IBazelStatsService {
 
-    BazelStatsRepository bazelStatsRepository;
+    private final BazelStatsRepository bazelStatsRepository;
+    private final BuildsRepository buildsRepository;
+
 
     @Autowired
-    public BazelStatsService(BazelStatsRepository bazelStatsRepository) {
+    public BazelStatsService(BazelStatsRepository bazelStatsRepository, BuildsRepository buildsRepository) {
         this.bazelStatsRepository = bazelStatsRepository;
+        this.buildsRepository = buildsRepository;
     }
 
     @Override
-    public BazelStats addStat(BazelStats bazelStats) {
+    public BazelStats addStat(long buildId, BazelStats bazelStats) {
+        Build specifiedBuild = buildsRepository.findById(buildId).get();
+        bazelStats.setBuild(specifiedBuild);
+
         /***
          *
          * Create a unique ID for each bazelStatVector, to avoid having the
@@ -39,6 +47,27 @@ public class BazelStatsService implements IBazelStatsService {
         return bazelStatsRepository.findAll();
     }
 
+    @Override
+    public BazelStats findByBuildName(String buildName) {
+        return null;
+    }
+
+    @Override
+    public List<?> findLastNBazelBuildNames(long numberOfRows) {
+        return null;
+    }
+
+    @Override
+    public List<BazelStats> findListOfBazelStatsByBuildName(ArrayList<String> listOfBuildNames) {
+        return null;
+    }
+
+    @Override
+    public List<BazelStats> findBazelStatsByBuildNames(List<String> listOfBuildNames) {
+        return bazelStatsRepository.findBazelStatsByBuildNames(listOfBuildNames);
+    }
+
+    /*
     @Override
     public BazelStats findByBuildName(String buildName) {
         return bazelStatsRepository.findByBuildName(buildName);
@@ -61,6 +90,7 @@ public class BazelStatsService implements IBazelStatsService {
     }
 
 
+*/
 
   /*  @Override
     public List<BazelStats> findTheAggregateOfNBazelStats(String number) {

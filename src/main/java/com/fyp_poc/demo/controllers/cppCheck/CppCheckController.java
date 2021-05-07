@@ -1,6 +1,7 @@
 package com.fyp_poc.demo.controllers.cppCheck;
 
 import com.fyp_poc.demo.DTO.CppCheck;
+import com.fyp_poc.demo.AggObjects.CppCheckAgg;
 import com.fyp_poc.demo.services.cppCheck.CppCheckService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,7 +12,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/cppcheck")
+@RequestMapping("")
 public class CppCheckController {
 
      private final CppCheckService cppCheckService;
@@ -22,10 +23,10 @@ public class CppCheckController {
     }
 
 
-    @PostMapping("")
-    public ResponseEntity<?> addCheck(@RequestBody CppCheckPostRequest request){
+    @PostMapping("/builds/{buildId}/cppChecks")
+    public ResponseEntity<?> addCheck(@RequestBody CppCheckPostRequest request, @PathVariable long buildId){
          try{
-             CppCheck cppCheck = cppCheckService.addCheck(buildFromRequest(request));
+             CppCheck cppCheck = cppCheckService.addCheck(buildId,buildFromRequest(request));
              CppCheckResponse response = buildFromCppCheck(cppCheck);
              return ResponseEntity.status(HttpStatus.OK).body(response);
          }catch (Exception e){
@@ -33,12 +34,12 @@ public class CppCheckController {
          }
     }
 
-    @PostMapping("/agg")
-    public Map<String,CppCheck> cppCheckAggregations (@RequestBody CppCheckAggregationRequest request){
+    @PostMapping("/builds/cppCheck-agg")
+    public Map<String, CppCheckAgg> cppCheckAggregations (@RequestBody CppCheckAggregationRequest request){
          return cppCheckService.cppCheckAggregation(request.getAggregations(), request.getAggregationSize());
     }
 
-    @GetMapping("/{cppCheckId}")
+    @GetMapping("/cppChecks/{cppCheckId}")
     public ResponseEntity<?> findCheckById(@PathVariable Long cppCheckId){
         try{
             CppCheck cppCheck = cppCheckService.findCppCheck(cppCheckId);
@@ -49,8 +50,8 @@ public class CppCheckController {
         }
     }
 
-    @GetMapping("")
-    public ResponseEntity<?> findAllChecks(){
+    @GetMapping("/cppChecks")
+    public ResponseEntity<?> findAllChecksForAllBuilds(){
         try{
             List<CppCheck> cppCheck = cppCheckService.findAllChecks();
             List<CppCheckResponse> responseList = buildListFromCppCheck(cppCheck);
@@ -58,29 +59,6 @@ public class CppCheckController {
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
-    }
-
-    @GetMapping("/last/{n}")
-    public ResponseEntity<?> findNChecks(@RequestParam Long n){
-         try{
-             List<CppCheck> cppChecks = cppCheckService.findLastNChecks(n).stream().sorted(Comparator.comparing(CppCheck::getId)).collect(Collectors.toList());
-             List<CppCheckResponse> responseList = buildListFromCppCheck(cppChecks);
-             return ResponseEntity.status(HttpStatus.OK).body(responseList);
-         }
-         catch (Exception e){
-             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-         }
-    }
-
-    @PostMapping("/build-names")
-    public ResponseEntity<?> buildListByBuildNames(@RequestBody CppCheckBuildNamesRequest buildNamesRequest){
-         try{
-             List<CppCheckResponse> responseList = buildListFromCppCheck(cppCheckService.findCppCheckByBuildNames(buildNamesRequest.getBuildNames()));
-             return ResponseEntity.ok(responseList);
-         }
-         catch (Exception e){
-             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-         }
     }
 
     @GetMapping("/build-names/last/{n}")
@@ -92,6 +70,18 @@ public class CppCheckController {
          }
     }
 
+    @PostMapping("/builds-name/cppChecks")
+    public ResponseEntity<?> findCppChecksByBuildNames(@RequestBody CppCheckBuildNamesRequest request){
+        try{
+            List<CppCheck> cppChecks = cppCheckService.findCppChecksByBuildNames(request.getBuildNames());
+            List<CppCheckResponse> responseList = buildListFromCppCheck(cppChecks);
+            return ResponseEntity.status(HttpStatus.OK).body(responseList);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+
     private List<CppCheckResponse> buildListFromCppCheck(List<CppCheck> listOfCppChecks) {
         List<CppCheckResponse> responseList = new ArrayList<>();
         for (CppCheck cppCheck : listOfCppChecks) {
@@ -102,7 +92,8 @@ public class CppCheckController {
 
     private CppCheckResponse buildFromCppCheck(CppCheck cppCheck) {
         return  CppCheckResponse.builder()
-                .buildName(cppCheck.getBuildName())
+                .id(cppCheck.getId())
+                .build(cppCheck.getBuild())
                 .error(cppCheck.getError())
                 .performance(cppCheck.getPerformance())
                 .portability(cppCheck.getPortability())
@@ -113,7 +104,6 @@ public class CppCheckController {
 
     private CppCheck buildFromRequest(CppCheckPostRequest request) {
         return CppCheck.builder()
-                .buildName(request.getBuildName())
                 .error(request.getError())
                 .performance(request.getPerformance())
                 .portability(request.getPortability())

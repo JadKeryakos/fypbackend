@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/builds")
@@ -32,6 +33,19 @@ public class BuildController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
+
+    @GetMapping("/{nbOfBuilds}")
+    public ResponseEntity findLastNBazelBuildNames(@PathVariable long nbOfBuilds){
+        try{
+            List<String> lastNBazelBuildNames = buildService.findLastNBazelBuildNames(nbOfBuilds);
+            List<BazelStatsBuildNamesResponse> bazelStatsBuildNamesResponses = lastNBazelBuildNames.stream().map(name -> BazelStatsBuildNamesResponse.builder().buildName(name).build()).collect(Collectors.toList());
+            return ResponseEntity.status(HttpStatus.OK).body(bazelStatsBuildNamesResponses);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+
 
 
     @PostMapping("")

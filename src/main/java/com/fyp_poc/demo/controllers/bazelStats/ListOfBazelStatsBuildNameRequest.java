@@ -9,6 +9,6 @@ import java.util.ArrayList;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ListOfBazelStatsRequest {
+public class ListOfBazelStatsBuildNameRequest {
     private ArrayList<String> listOfBuildNames;
 }

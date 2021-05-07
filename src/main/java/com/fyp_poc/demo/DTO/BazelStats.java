@@ -3,12 +3,9 @@ package com.fyp_poc.demo.DTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -21,14 +18,11 @@ public class BazelStats {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long id;
-    @Column(name="build_name", unique = true)
-    @JsonProperty("build_name")
-    String buildName;
     @OneToMany(
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    @JoinColumn(name = "build_id")
+    @JoinColumn(name = "bazel_stats_id")
     @JsonProperty("payload")
     private List<BazelStatsVector> bazelStatsVectorList;
 

@@ -27,4 +27,9 @@ public class BuildService implements IBuildService {
     public Build createBuild(Build build) {
         return buildsRepository.save(build);
     }
+
+    @Override
+    public List<String> findLastNBazelBuildNames(long nbOfBuilds) {
+        return buildsRepository.findLastNBazelBuildNames(nbOfBuilds);
+    }
 }
