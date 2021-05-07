@@ -25,7 +25,7 @@ public class BazelStats {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    @JoinColumn(name = "build_id")
+    @JoinColumn(name = "bazel_stats_id")
     @JsonProperty("payload")
     private List<BazelStatsVector> bazelStatsVectorList;
 

@@ -62,6 +62,11 @@ public class BazelStatsService implements IBazelStatsService {
         return null;
     }
 
+    @Override
+    public List<BazelStats> findBazelStatsByBuildNames(List<String> listOfBuildNames) {
+        return bazelStatsRepository.findBazelStatsByBuildNames(listOfBuildNames);
+    }
+
     /*
     @Override
     public BazelStats findByBuildName(String buildName) {

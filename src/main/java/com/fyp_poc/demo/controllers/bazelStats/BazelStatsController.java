@@ -5,6 +5,9 @@ import com.fyp_poc.demo.DTO.BazelStats;
 
 import com.fyp_poc.demo.AggObjects.BazelStatsAgg;
 import com.fyp_poc.demo.DTO.BazelStatsVector;
+import com.fyp_poc.demo.DTO.CppCheck;
+import com.fyp_poc.demo.controllers.cppCheck.CppCheckBuildNamesRequest;
+import com.fyp_poc.demo.controllers.cppCheck.CppCheckResponse;
 import com.fyp_poc.demo.services.bazelStats.BazelStatsService;
 import com.fyp_poc.demo.services.bazelStatsVector.BazelStatsVectorService;
 import lombok.Getter;
@@ -73,6 +76,17 @@ public class BazelStatsController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
+
+    @PostMapping("/builds-name/bazel-stats")
+    public ResponseEntity<?> findBazelStatsByBuildNames(@RequestBody ListOfBazelStatsBuildNameRequest request){
+        try{
+            List<BazelStats> BazelStatsVectorList = bazelStatsService.findBazelStatsByBuildNames(request.getListOfBuildNames());
+            return ResponseEntity.status(HttpStatus.OK).body(BazelStatsVectorList);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
 
     /*
     @GetMapping("/build-names/{numberOfRows}")

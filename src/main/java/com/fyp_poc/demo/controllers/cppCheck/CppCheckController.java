@@ -70,6 +70,18 @@ public class CppCheckController {
          }
     }
 
+    @PostMapping("/builds-name/cppChecks")
+    public ResponseEntity<?> findCppChecksByBuildNames(@RequestBody CppCheckBuildNamesRequest request){
+        try{
+            List<CppCheck> cppChecks = cppCheckService.findCppChecksByBuildNames(request.getBuildNames());
+            List<CppCheckResponse> responseList = buildListFromCppCheck(cppChecks);
+            return ResponseEntity.status(HttpStatus.OK).body(responseList);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+
     private List<CppCheckResponse> buildListFromCppCheck(List<CppCheck> listOfCppChecks) {
         List<CppCheckResponse> responseList = new ArrayList<>();
         for (CppCheck cppCheck : listOfCppChecks) {

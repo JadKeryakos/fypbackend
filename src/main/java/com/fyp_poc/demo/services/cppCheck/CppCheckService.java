@@ -3,6 +3,7 @@ package com.fyp_poc.demo.services.cppCheck;
 import com.fyp_poc.demo.DTO.Build;
 import com.fyp_poc.demo.DTO.CppCheck;
 import com.fyp_poc.demo.AggObjects.CppCheckAgg;
+import com.fyp_poc.demo.controllers.cppCheck.CppCheckBuildNamesRequest;
 import com.fyp_poc.demo.repositories.BuildsRepository;
 import com.fyp_poc.demo.repositories.CppCheckRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +69,11 @@ public class CppCheckService implements ICppCheckService {
     @Override
     public List<String> findLastNBuildNames(long number) {
         return cppCheckRepository.findLastCheckNames(number);
+    }
+
+    @Override
+    public List<CppCheck> findCppChecksByBuildNames(List<String> listOfBuildNames) {
+        return cppCheckRepository.findCppChecksByBuildNames(listOfBuildNames);
     }
 
     private CppCheckAgg getCppCheckSum(Long aggregationSize) {
