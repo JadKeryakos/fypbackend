@@ -12,4 +12,8 @@ public interface BuildTestsRepository extends JpaRepository<BuildTests, Long> {
 
     @Query(value="select * from build_tests order by id desc limit :number ;", nativeQuery = true)
     List<BuildTests> getLastNBuildTests(@Param("number") long number);
+
+
+    @Query(value = "select T.* from build_tests T right join (select * from builds where build_name in (:namesList ) ) X on X.id = T.build_id; " , nativeQuery = true)
+    List<BuildTests> getBuildTestsFromNames(@Param("namesList") List<String> namesList);
 }
