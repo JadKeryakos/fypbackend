@@ -11,8 +11,7 @@ import java.util.UUID;
 
 public interface BazelStatsVectorRepository extends JpaRepository<BazelStatsVector, UUID> {
 
-    @Query(value ="select name, percentage, time, BSV.id as id from bazel_stats_vector BSV " +
-            "join (Select id from bazel_stats order by id desc limit :number) BS on BSV.build_id= BS.id ;"
+    @Query(value ="select * from bazel_stats_vector BSV right join (select * from bazel_stats order by id desc limit :number ) X on X.id = BSV.bazel_stats_id; "
             , nativeQuery = true)
     List<BazelStatsVector> findTheLatestNBazelStats(@Param("number") long number);
 
