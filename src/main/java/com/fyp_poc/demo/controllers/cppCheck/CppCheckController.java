@@ -1,6 +1,7 @@
 package com.fyp_poc.demo.controllers.cppCheck;
 
 import com.fyp_poc.demo.DTO.CppCheck;
+import com.fyp_poc.demo.DTO.CppCheckAgg;
 import com.fyp_poc.demo.services.cppCheck.CppCheckService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,7 +35,7 @@ public class CppCheckController {
     }
 
     @PostMapping("/agg")
-    public Map<String,CppCheck> cppCheckAggregations (@RequestBody CppCheckAggregationRequest request){
+    public Map<String, CppCheckAgg> cppCheckAggregations (@RequestBody CppCheckAggregationRequest request){
          return cppCheckService.cppCheckAggregation(request.getAggregations(), request.getAggregationSize());
     }
 
