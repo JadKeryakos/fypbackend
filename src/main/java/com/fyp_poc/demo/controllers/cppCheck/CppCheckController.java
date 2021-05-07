@@ -61,10 +61,12 @@ public class CppCheckController {
         }
     }
 
-    @GetMapping("/build-names/last/{n}")
-    public ResponseEntity<?> lastNbuildNames(@PathVariable long n){
+    @GetMapping("/cppChecks/last/{n}")
+    public ResponseEntity<?> findLastNCppChecks(@PathVariable("n") long n){
          try{
-             return ResponseEntity.ok(cppCheckService.findLastNBuildNames(n));
+            List<CppCheck> cppChecks = cppCheckService.findLastNChecks(n);
+            Collections.reverse(cppChecks);
+            return ResponseEntity.ok(cppChecks);
          }catch (Exception e){
              return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
          }
