@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -89,6 +90,30 @@ public class BuildTestsController {
         try {
             Map<String, TestsAgg> res = buildTestsService.generateTestsAgg(request.getAggregations(),request.getAggregationSize());
             return ResponseEntity.status(HttpStatus.OK).body(res);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("build/tests/last/{n}")
+    public ResponseEntity<?> findLastNBuildTests(@PathVariable("n") long n){
+        try {
+            List<BuildTests> buildTest = buildTestsService.findLastNTests(n);
+            Collections.reverse(buildTest);
+            List<BuildTestApiResponse> response = buildListOFBuildTestsResponseFrom(buildTest);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("build/tests/names/")
+    public ResponseEntity<?> findTestBuildsNamesIn(@RequestBody NamesListRequest names){
+        try {
+            List<BuildTests> buildTest = buildTestsService.findNamesIn(names.getNames());
+            Collections.reverse(buildTest);
+            List<BuildTestApiResponse> response = buildListOFBuildTestsResponseFrom(buildTest);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

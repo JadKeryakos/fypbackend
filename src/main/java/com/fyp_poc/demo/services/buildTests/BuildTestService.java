@@ -3,6 +3,7 @@ package com.fyp_poc.demo.services.buildTests;
 import com.fyp_poc.demo.AggObjects.TestsAgg;
 import com.fyp_poc.demo.DTO.Build;
 import com.fyp_poc.demo.DTO.BuildTests;
+import com.fyp_poc.demo.controllers.buildTests.NamesListRequest;
 import com.fyp_poc.demo.repositories.BuildTestsRepository;
 import com.fyp_poc.demo.repositories.BuildsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,5 +74,15 @@ public class BuildTestService implements IBuildTestsService {
     @Override
     public List<BuildTests> findAllTests() {
         return buildTestsRepository.findAll();
+    }
+
+    @Override
+    public List<BuildTests> findNamesIn(List<String> names) {
+        return buildTestsRepository.getBuildTestsFromNames(names);
+    }
+
+    @Override
+    public List<BuildTests> findLastNTests(long n){
+        return buildTestsRepository.getLastNBuildTests(n);
     }
 }
