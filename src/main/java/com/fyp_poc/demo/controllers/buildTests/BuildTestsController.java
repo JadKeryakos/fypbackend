@@ -2,13 +2,17 @@ package com.fyp_poc.demo.controllers.buildTests;
 
 import com.fyp_poc.demo.AggObjects.TestsAgg;
 import com.fyp_poc.demo.DTO.BuildTests;
+import com.fyp_poc.demo.DTO.CppCheck;
 import com.fyp_poc.demo.controllers.cppCheck.CppCheckAggregationRequest;
+import com.fyp_poc.demo.controllers.cppCheck.CppCheckResponse;
 import com.fyp_poc.demo.services.buildTests.IBuildTestsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -35,10 +39,10 @@ public class BuildTestsController {
     }
 
     @GetMapping("/tests")
-    public ResponseEntity findAllTests(@PathVariable("buildId") long buildId) {
+    public ResponseEntity findAllTests() {
         try {
-            BuildTests buildTest = buildTestsService.findBuildTestByBuildId(buildId);
-            BuildTestApiResponse response = buildResponseFromBuildTest(buildTest);
+            List<BuildTests> buildTest = buildTestsService.findAllTests();
+            List<BuildTestApiResponse> response = buildListOFBuildTestsResponseFrom(buildTest);
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -88,6 +92,14 @@ public class BuildTestsController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
+    }
+
+    private List<BuildTestApiResponse> buildListOFBuildTestsResponseFrom(List<BuildTests> buildTests) {
+        List<BuildTestApiResponse> responseList = new ArrayList<>();
+        for (BuildTests entry : buildTests) {
+            responseList.add(buildResponseFromBuildTest(entry));
+        }
+        return responseList;
     }
 
     private BuildTestApiResponse buildResponseFromBuildTest(BuildTests buildTest) {

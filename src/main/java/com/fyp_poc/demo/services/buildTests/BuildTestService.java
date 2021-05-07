@@ -1,13 +1,10 @@
 package com.fyp_poc.demo.services.buildTests;
 
-import com.fyp_poc.demo.AggObjects.CppCheckAgg;
 import com.fyp_poc.demo.AggObjects.TestsAgg;
-import com.fyp_poc.demo.DTO.BazelStatsVector;
 import com.fyp_poc.demo.DTO.Build;
 import com.fyp_poc.demo.DTO.BuildTests;
 import com.fyp_poc.demo.repositories.BuildTestsRepository;
 import com.fyp_poc.demo.repositories.BuildsRepository;
-import org.aspectj.weaver.ast.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -71,5 +68,10 @@ public class BuildTestService implements IBuildTestsService {
             res.put(agg,aggregationMap.get(agg).apply(buildTestsList));
         }
         return res;
+    }
+
+    @Override
+    public List<BuildTests> findAllTests() {
+        return buildTestsRepository.findAll();
     }
 }
