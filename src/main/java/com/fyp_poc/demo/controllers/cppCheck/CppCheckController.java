@@ -102,6 +102,7 @@ public class CppCheckController {
 
     private CppCheckResponse buildFromCppCheck(CppCheck cppCheck) {
         return  CppCheckResponse.builder()
+                .id(cppCheck.getId())
                 .build(cppCheck.getBuild())
                 .error(cppCheck.getError())
                 .performance(cppCheck.getPerformance())

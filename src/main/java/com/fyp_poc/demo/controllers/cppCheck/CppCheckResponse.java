@@ -13,7 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class CppCheckResponse {
-    @JsonIgnore
+
     private long id;
     private double error;
     private double performance;
