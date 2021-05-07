@@ -30,9 +30,6 @@ public class CppCheck {
     @GeneratedValue
     @JsonIgnore
     private long id;
-    @Column(name="build_name")
-    @JsonProperty("build-name")
-    private String buildName;
     @JsonProperty("error")
     double error;
     @JsonProperty("performance")
@@ -48,9 +45,8 @@ public class CppCheck {
     @JoinColumn(name = "build_id", referencedColumnName = "id",unique=true)
     private Build build;
 
-    public CppCheck(long id,String buildName,double error,double performance,double portability,double style, double warning){
+    public CppCheck(long id,double error,double performance,double portability,double style, double warning){
         this.id=0L;
-        this.buildName=buildName;
         this.portability=portability;
         this.error=error;
         this.performance=performance;
@@ -60,7 +56,7 @@ public class CppCheck {
     }
 
     public CppCheck cppCheckReduceSingle(CppCheck baseReduce, BiFunction<Double,Double,Double> lambda){
-        return new CppCheck(0L,"BuildName Aggregation",
+        return new CppCheck(0L,
                 lambda.apply(error,baseReduce.getError()),
                 lambda.apply(performance,baseReduce.getPerformance()),
                 lambda.apply(portability, baseReduce.getPortability()),
@@ -69,7 +65,7 @@ public class CppCheck {
     }
 
     public static CppCheck cppCheckReduceList(List<CppCheck> cppChecks,Function<List<Double>,Double> lambda){
-        return new CppCheck(0L,"BuildName Aggregation",
+        return new CppCheck(0L,
                 lambda.apply(cppChecks.stream().map(CppCheck::getError).collect(Collectors.toList())),
                 lambda.apply(cppChecks.stream().map(CppCheck::getPerformance).collect(Collectors.toList())),
                 lambda.apply(cppChecks.stream().map(CppCheck::getPortability).collect(Collectors.toList())),
@@ -79,6 +75,6 @@ public class CppCheck {
     }
 
     public static CppCheck cppCheckNil(){
-        return new CppCheck(0L,"",0L,0L,0L,0L,0L);
+        return new CppCheck(0L,0L,0L,0L,0L,0L);
     }
 }

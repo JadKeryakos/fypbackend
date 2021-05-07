@@ -1,8 +1,11 @@
 package com.fyp_poc.demo.services.cppCheck;
 
+import com.fyp_poc.demo.DTO.Build;
 import com.fyp_poc.demo.DTO.CppCheck;
+import com.fyp_poc.demo.repositories.BuildsRepository;
 import com.fyp_poc.demo.repositories.CppCheckRepository;
 import com.fyp_poc.demo.utils.SqlUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -16,9 +19,14 @@ public class CppCheckService implements ICppCheckService {
 
 
     private final CppCheckRepository cppCheckRepository;
+    private final BuildsRepository buildsRepository;
     private final Map<String, Function<Long,CppCheck>> aggregatorMap;
-    public CppCheckService(CppCheckRepository cppCheckRepository, Map<String, Function<Long, CppCheck>> aggregatorMap) {
+
+
+    @Autowired
+    public CppCheckService(CppCheckRepository cppCheckRepository, BuildsRepository buildsRepository, Map<String, Function<Long, CppCheck>> aggregatorMap) {
         this.cppCheckRepository = cppCheckRepository;
+        this.buildsRepository = buildsRepository;
         this.aggregatorMap = aggregatorMap;
         aggregatorMap.put("sum",this::getCppCheckSum);
         aggregatorMap.put("max",this::getCppCheckMax);
@@ -27,7 +35,9 @@ public class CppCheckService implements ICppCheckService {
     }
 
     @Override
-    public CppCheck addCheck(CppCheck cppCheck) {
+    public CppCheck addCheck(long buildId, CppCheck cppCheck) {
+        Build specifiedBuild = buildsRepository.findById(buildId).get();
+        cppCheck.setBuild(specifiedBuild);
         return cppCheckRepository.save(cppCheck);
     }
 

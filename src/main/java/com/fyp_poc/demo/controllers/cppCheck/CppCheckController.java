@@ -22,10 +22,10 @@ public class CppCheckController {
     }
 
 
-    @PostMapping("")
-    public ResponseEntity<?> addCheck(@RequestBody CppCheckPostRequest request){
+    @PostMapping("/builds/{buildId}/cppChecks")
+    public ResponseEntity<?> addCheck(@RequestBody CppCheckPostRequest request, @PathVariable long buildId){
          try{
-             CppCheck cppCheck = cppCheckService.addCheck(buildFromRequest(request));
+             CppCheck cppCheck = cppCheckService.addCheck(buildId,buildFromRequest(request));
              CppCheckResponse response = buildFromCppCheck(cppCheck);
              return ResponseEntity.status(HttpStatus.OK).body(response);
          }catch (Exception e){
@@ -102,7 +102,7 @@ public class CppCheckController {
 
     private CppCheckResponse buildFromCppCheck(CppCheck cppCheck) {
         return  CppCheckResponse.builder()
-                .buildName(cppCheck.getBuildName())
+                .build(cppCheck.getBuild())
                 .error(cppCheck.getError())
                 .performance(cppCheck.getPerformance())
                 .portability(cppCheck.getPortability())
@@ -113,7 +113,6 @@ public class CppCheckController {
 
     private CppCheck buildFromRequest(CppCheckPostRequest request) {
         return CppCheck.builder()
-                .buildName(request.getBuildName())
                 .error(request.getError())
                 .performance(request.getPerformance())
                 .portability(request.getPortability())
