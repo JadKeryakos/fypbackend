@@ -1,7 +1,7 @@
 package com.fyp_poc.demo.controllers.cppCheck;
 
 import com.fyp_poc.demo.DTO.CppCheck;
-import com.fyp_poc.demo.DTO.CppCheckAgg;
+import com.fyp_poc.demo.AggObjects.CppCheckAgg;
 import com.fyp_poc.demo.services.cppCheck.CppCheckService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -3,10 +3,8 @@ package com.fyp_poc.demo.controllers.bazelStats;
 import com.fyp_poc.demo.DTO.BazelStats;
 
 
-import com.fyp_poc.demo.DTO.BazelStatsAgg;
+import com.fyp_poc.demo.AggObjects.BazelStatsAgg;
 import com.fyp_poc.demo.DTO.BazelStatsVector;
-import com.fyp_poc.demo.DTO.CppCheck;
-import com.fyp_poc.demo.controllers.cppCheck.CppCheckResponse;
 import com.fyp_poc.demo.services.bazelStats.BazelStatsService;
 import com.fyp_poc.demo.services.bazelStatsVector.BazelStatsVectorService;
 import lombok.Getter;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter

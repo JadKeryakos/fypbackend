@@ -1,9 +1,8 @@
-package com.fyp_poc.demo.DTO;
+package com.fyp_poc.demo.AggObjects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
-import javax.persistence.Entity;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;

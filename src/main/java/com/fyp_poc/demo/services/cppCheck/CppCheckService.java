@@ -2,11 +2,9 @@ package com.fyp_poc.demo.services.cppCheck;
 
 import com.fyp_poc.demo.DTO.Build;
 import com.fyp_poc.demo.DTO.CppCheck;
-import com.fyp_poc.demo.DTO.CppCheckAgg;
-import com.fyp_poc.demo.controllers.cppCheck.CppCheckResponse;
+import com.fyp_poc.demo.AggObjects.CppCheckAgg;
 import com.fyp_poc.demo.repositories.BuildsRepository;
 import com.fyp_poc.demo.repositories.CppCheckRepository;
-import com.fyp_poc.demo.utils.SqlUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,7 +1,6 @@
 package com.fyp_poc.demo.services.bazelStatsVector;
 
-import com.fyp_poc.demo.DTO.BazelStats;
-import com.fyp_poc.demo.DTO.BazelStatsAgg;
+import com.fyp_poc.demo.AggObjects.BazelStatsAgg;
 import com.fyp_poc.demo.DTO.BazelStatsVector;
 
 import java.util.List;

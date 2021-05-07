@@ -1,7 +1,7 @@
 package com.fyp_poc.demo.services.cppCheck;
 
 import com.fyp_poc.demo.DTO.CppCheck;
-import com.fyp_poc.demo.DTO.CppCheckAgg;
+import com.fyp_poc.demo.AggObjects.CppCheckAgg;
 
 import java.util.List;
 import java.util.Map;

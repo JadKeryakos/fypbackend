@@ -1,10 +1,8 @@
 package com.fyp_poc.demo.services.bazelStatsVector;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fyp_poc.demo.DTO.BazelStats;
-import com.fyp_poc.demo.DTO.BazelStatsAgg;
+import com.fyp_poc.demo.AggObjects.BazelStatsAgg;
 import com.fyp_poc.demo.DTO.BazelStatsVector;
-import com.fyp_poc.demo.DTO.BazelStatsVectorAgg;
+import com.fyp_poc.demo.AggObjects.BazelStatsVectorAgg;
 import com.fyp_poc.demo.repositories.BazelStatsVectorRepository;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.fyp_poc.demo.DTO;
+package com.fyp_poc.demo.AggObjects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
