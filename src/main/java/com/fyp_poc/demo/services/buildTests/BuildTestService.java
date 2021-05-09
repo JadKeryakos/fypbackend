@@ -77,6 +77,11 @@ public class BuildTestService implements IBuildTestsService {
     }
 
     @Override
+    public void removeBuildTests(long id) {
+        buildTestsRepository.deleteById(id);
+    }
+
+    @Override
     public List<BuildTests> findNamesIn(List<String> names) {
         return buildTestsRepository.getBuildTestsFromNames(names);
     }

@@ -17,6 +17,6 @@ public interface ICppCheckService {
     List<CppCheck> findLastNChecks(long n);
     List<CppCheck> findCppCheckByBuildNames(List<String> buildNames);
     List<String> findLastNBuildNames(long number);
-
+    void removeCppCheck(long id);
     List<CppCheck>  findCppChecksByBuildNames(List<String>  listOfBuildNames);
 }

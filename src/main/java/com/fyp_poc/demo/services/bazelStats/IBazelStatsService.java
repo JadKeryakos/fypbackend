@@ -17,6 +17,6 @@ public interface IBazelStatsService {
     List<?> findLastNBazelBuildNames(long numberOfRows);
 
     List<BazelStats> findListOfBazelStatsByBuildName(ArrayList<String> listOfBuildNames);
-
+    void removeBazelStats(long id);
     List<BazelStats> findBazelStatsByBuildNames(List<String> listOfBuildNames);
 }

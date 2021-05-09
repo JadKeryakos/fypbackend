@@ -19,4 +19,7 @@ public interface BazelStatsVectorRepository extends JpaRepository<BazelStatsVect
     @Query(value =" select * from bazel_stats_vector BSV right join bazel_stats BS on BSV.bazel_stats_id = bs.id right join ( select * from builds where builds.build_name in (:listOfBuildNames) ) X on X.id = BS.build_id ;"
             , nativeQuery = true)
     List<BazelStatsVector> findBazelStatsByBuildNames(@Param("listOfBuildNames") List<String> listOfBuildNames);
+
+    @Query(value="delete from bazel_stats_vector where build_id = :id ;")
+    void removeVectorsForBuild(long id);
 }

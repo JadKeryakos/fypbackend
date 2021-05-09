@@ -4,6 +4,7 @@ import com.fyp_poc.demo.DTO.BazelStats;
 import com.fyp_poc.demo.DTO.BazelStatsVector;
 import com.fyp_poc.demo.DTO.Build;
 import com.fyp_poc.demo.repositories.BazelStatsRepository;
+import com.fyp_poc.demo.repositories.BazelStatsVectorRepository;
 import com.fyp_poc.demo.repositories.BuildsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,12 +16,14 @@ public class BazelStatsService implements IBazelStatsService {
 
     private final BazelStatsRepository bazelStatsRepository;
     private final BuildsRepository buildsRepository;
+    private final BazelStatsVectorRepository bazelStatsVectorRepository;
 
 
     @Autowired
-    public BazelStatsService(BazelStatsRepository bazelStatsRepository, BuildsRepository buildsRepository) {
+    public BazelStatsService(BazelStatsRepository bazelStatsRepository, BuildsRepository buildsRepository, BazelStatsVectorRepository bazelStatsVectorRepository) {
         this.bazelStatsRepository = bazelStatsRepository;
         this.buildsRepository = buildsRepository;
+        this.bazelStatsVectorRepository = bazelStatsVectorRepository;
     }
 
     @Override
@@ -60,6 +63,12 @@ public class BazelStatsService implements IBazelStatsService {
     @Override
     public List<BazelStats> findListOfBazelStatsByBuildName(ArrayList<String> listOfBuildNames) {
         return null;
+    }
+
+    @Override
+    public void removeBazelStats(UUID id) {
+        bazelStatsVectorRepository.removeVectorsForBuild(id);
+        bazelStatsRepository.deleteById(id);
     }
 
     @Override
