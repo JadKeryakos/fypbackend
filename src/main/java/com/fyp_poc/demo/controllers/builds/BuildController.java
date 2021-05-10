@@ -59,6 +59,27 @@ public class BuildController {
         }
     }
 
+    @DeleteMapping("/build/{id}")
+    public ResponseEntity<?> deleteBuild(@PathVariable long id){
+        try{
+            buildService.deleteBuild(id);
+            return new ResponseEntity<Void>(HttpStatus.OK);
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/build/all")
+    public ResponseEntity<?> deleteAllBuilds(){
+        try{
+            buildService.deleteAllBuilds();
+            return new ResponseEntity<Void>(HttpStatus.OK);
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
     private Build getBuildFromApiRequest(BuildApiRequest request) {
         return Build.builder()
                 .buildName(request.getBuildName())

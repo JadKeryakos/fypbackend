@@ -14,4 +14,5 @@ public interface IBazelStatsVectorService {
     Map<String, BazelStatsAgg> generateAggregations(List<String> aggregations, Long aggregationSize);
     void removeVectorsForBuild(long id);
     List<BazelStatsVector> findBazelStatsByBuildNames(ArrayList<String> listOfBuildNames);
+    void removeAllBazelStatsVector();
 }

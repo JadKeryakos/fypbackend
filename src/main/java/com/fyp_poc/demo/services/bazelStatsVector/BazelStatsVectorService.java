@@ -52,6 +52,11 @@ public class BazelStatsVectorService implements IBazelStatsVectorService{
         return bazelStatsVectorRepository.findBazelStatsByBuildNames(listOfBuildNames);
     }
 
+    @Override
+    public void removeAllBazelStatsVector() {
+        bazelStatsVectorRepository.removeAll();
+    }
+
 
     private Map<String, List<BazelStatsVector>> generateRawStats(Long aggregationSize) {
         List<BazelStatsVector> bazelStatsVectors = findTheLatestNBazelStats(aggregationSize);

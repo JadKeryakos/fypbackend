@@ -14,6 +14,7 @@ public interface IBuildTestsService {
     Map<String,TestsAgg> generateTestsAgg(List<String> aggregations,long aggregationSize);
     List<BuildTests> findLastNTests(long n);
     List<BuildTests> findAllTests();
-    void removeBuildTests(long id);
     List<BuildTests> findNamesIn(List<String> names);
+    void removeBuildTestsForBuild(long id);
+    void removeAllBuildTests();
 }

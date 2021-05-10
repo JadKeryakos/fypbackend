@@ -66,14 +66,23 @@ public class BazelStatsService implements IBazelStatsService {
     }
 
     @Override
-    public void removeBazelStats(UUID id) {
-        bazelStatsVectorRepository.removeVectorsForBuild(id);
-        bazelStatsRepository.deleteById(id);
+    public void removeBazelStatsForBuild(long id) {
+        BazelStats bazelStats = bazelStatsRepository.findBazelStatsByBuildId(id);
+        if(bazelStats!=null) {
+            bazelStatsVectorRepository.removeVectorsForBuild(bazelStats.getId());
+            bazelStatsRepository.removeBazelStatsForBuild(id);
+        }
     }
 
     @Override
     public List<BazelStats> findBazelStatsByBuildNames(List<String> listOfBuildNames) {
         return bazelStatsRepository.findBazelStatsByBuildNames(listOfBuildNames);
+    }
+
+    @Override
+    public void removeAllBazelStats() {
+        bazelStatsVectorRepository.removeAll();
+        bazelStatsRepository.removeAll();
     }
 
     /*
