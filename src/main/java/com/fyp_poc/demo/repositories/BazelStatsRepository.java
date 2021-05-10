@@ -1,17 +1,15 @@
 package com.fyp_poc.demo.repositories;
 
 import com.fyp_poc.demo.DTO.BazelStats;
-import com.fyp_poc.demo.DTO.BazelStatsVector;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import java.util.List;
-import java.util.UUID;
 
-public interface BazelStatsRepository extends JpaRepository<BazelStats, UUID> {
+public interface BazelStatsRepository extends JpaRepository<BazelStats, Long> {
 
 
 
@@ -19,6 +17,19 @@ public interface BazelStatsRepository extends JpaRepository<BazelStats, UUID> {
             , nativeQuery = true)
     List<BazelStats> findBazelStatsByBuildNames(@Param("listOfBuildNames") List<String> listOfBuildNames);
 
+
+    @Query(value="select * from bazel_stats where build_id = :id" , nativeQuery = true)
+    BazelStats findBazelStatsByBuildId(long id);
+
+    @Modifying
+    @Transactional
+    @Query(value = "delete from bazel_stats where build_id = :id ", nativeQuery = true)
+    void removeBazelStatsForBuild(@Param("id") long id);
+
+    @Modifying
+    @Transactional
+    @Query(value = "delete from bazel_stats" , nativeQuery = true)
+    void removeAll();
 /*
    BazelStats findByBuildName (String buildName);
 

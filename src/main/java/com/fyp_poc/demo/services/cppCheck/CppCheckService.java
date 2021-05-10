@@ -72,8 +72,18 @@ public class CppCheckService implements ICppCheckService {
     }
 
     @Override
+    public void removeCppCheckByBuildId(long id) {
+        cppCheckRepository.deleteCheckByBuildId(id);
+    }
+
+    @Override
     public List<CppCheck> findCppChecksByBuildNames(List<String> listOfBuildNames) {
         return cppCheckRepository.findCppChecksByBuildNames(listOfBuildNames);
+    }
+
+    @Override
+    public void removeAllCppCheck() {
+        cppCheckRepository.removeAll();
     }
 
     private CppCheckAgg getCppCheckSum(Long aggregationSize) {

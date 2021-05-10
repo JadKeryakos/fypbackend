@@ -43,8 +43,18 @@ public class BazelStatsVectorService implements IBazelStatsVectorService{
     }
 
     @Override
+    public void removeVectorsForBuild(long id) {
+        bazelStatsVectorRepository.removeVectorsForBuild(id);
+    }
+
+    @Override
     public List<BazelStatsVector> findBazelStatsByBuildNames(ArrayList<String> listOfBuildNames) {
         return bazelStatsVectorRepository.findBazelStatsByBuildNames(listOfBuildNames);
+    }
+
+    @Override
+    public void removeAllBazelStatsVector() {
+        bazelStatsVectorRepository.removeAll();
     }
 
 

@@ -82,6 +82,16 @@ public class BuildTestService implements IBuildTestsService {
     }
 
     @Override
+    public void removeBuildTestsForBuild(long id) {
+        buildTestsRepository.removeBuildTestsForBuild(id);
+    }
+
+    @Override
+    public void removeAllBuildTests() {
+        buildTestsRepository.removeAll();
+    }
+
+    @Override
     public List<BuildTests> findLastNTests(long n){
         return buildTestsRepository.getLastNBuildTests(n);
     }

@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface IBuildService {
     List<Build> findAllBazelBuilds();
-
     Build createBuild(Build build);
-
     List<String> findLastNBazelBuildNames(long nbOfBuilds);
+    void deleteBuild(long id);
+    void deleteAllBuilds();
 }
