@@ -98,7 +98,7 @@ public class BuildController {
         return Build.builder()
                 .buildName(request.getBuildName())
                 .buildStatus(request.getBuildStatus())
-                .testsStatus(request.getBuildStatus())
+                .testsStatus(request.getTestStatus())
                 .build();
     }
 
