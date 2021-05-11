@@ -57,4 +57,15 @@ public class BuildService implements IBuildService {
         buildTestService.removeAllBuildTests();
         buildsRepository.removeAll();
     }
+
+    @Override
+    public Boolean updateBuild(Long id, String buildStatus, String testsStatus) {
+        Build build = buildsRepository.findById(id).orElse(null);
+        if(build==null)
+            return false;
+        build.setBuildStatus(buildStatus);
+        build.setTestsStatus(testsStatus);
+        buildsRepository.save(build);
+        return true;
+    }
 }

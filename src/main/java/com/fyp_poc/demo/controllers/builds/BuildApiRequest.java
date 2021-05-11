@@ -9,4 +9,6 @@ import lombok.*;
 @AllArgsConstructor
 public class BuildApiRequest {
     private String buildName;
+    private String buildStatus;
+    private String testStatus;
 }

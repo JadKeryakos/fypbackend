@@ -11,4 +11,6 @@ public interface IBuildService {
     List<String> findLastNBazelBuildNames(long nbOfBuilds);
     void deleteBuild(long id);
     void deleteAllBuilds();
+
+    Boolean updateBuild(Long id, String buildStatus, String testsStatus);
 }

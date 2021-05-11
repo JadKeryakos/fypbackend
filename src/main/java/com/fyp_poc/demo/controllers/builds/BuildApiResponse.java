@@ -15,4 +15,6 @@ public class BuildApiResponse {
     private long id;
     private String buildName;
     private Date createDate;
+    private String buildStatus;
+    private String testsStatus;
 }

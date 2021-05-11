@@ -2,6 +2,7 @@ package com.fyp_poc.demo.controllers.builds;
 
 import com.fyp_poc.demo.DTO.Build;
 import com.fyp_poc.demo.services.builds.BuildService;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -59,6 +60,19 @@ public class BuildController {
         }
     }
 
+    @PutMapping("/build/{id}")
+    public ResponseEntity updateBuild(@PathVariable Long id, @RequestBody BuildUpdateRequest request){
+        try{
+            if(!buildService.updateBuild(id,request.getBuildStatus(),request.getTestsStatus())){
+                throw new NotFoundException("The requested build was not found");
+            }
+            return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
     @DeleteMapping("/build/{id}")
     public ResponseEntity<?> deleteBuild(@PathVariable long id){
         try{
@@ -83,6 +97,8 @@ public class BuildController {
     private Build getBuildFromApiRequest(BuildApiRequest request) {
         return Build.builder()
                 .buildName(request.getBuildName())
+                .buildStatus(request.getBuildStatus())
+                .testsStatus(request.getBuildStatus())
                 .build();
     }
 
@@ -100,6 +116,8 @@ public class BuildController {
                 .buildName(build.getBuildName())
                 .id(build.getId())
                 .createDate(build.getCreateDate())
+                .buildStatus(build.getBuildStatus())
+                .testsStatus(build.getTestsStatus())
                 .build();
     }
 

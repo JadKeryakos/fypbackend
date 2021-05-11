@@ -3,7 +3,9 @@ package com.fyp_poc.demo.DTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.beans.factory.annotation.Value;
 import javax.persistence.*;
 import java.util.Date;
 
@@ -15,6 +17,7 @@ import java.util.Date;
 @ToString
 @Entity(name = "builds")
 @Table(name = "builds")
+@Configuration
 public class Build {
 
     @Id
@@ -29,8 +32,11 @@ public class Build {
     @Column(name = "create_date")
     private Date createDate;
 
+    @Column(name = "build_status")
+    private String buildStatus;
 
-
+    @Column(name="tests_status")
+    private String testsStatus;
 
 }
 
