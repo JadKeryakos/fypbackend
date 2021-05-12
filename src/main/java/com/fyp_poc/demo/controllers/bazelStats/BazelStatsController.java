@@ -21,6 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author : Maroun Ayli
+ */
 @Getter
 @Setter
 @RestController
@@ -28,8 +31,15 @@ import java.util.Map;
 public class BazelStatsController {
 
 
+    /**
+     * Service that manages bazelStats-related queries
+     */
     private BazelStatsService bazelStatsService;
+    /**
+     * Service that manages bazelStatsVectors-related queries
+     */
     private BazelStatsVectorService bazelStatsVectorService;
+
 
     @Autowired
     public BazelStatsController(BazelStatsService bazelStatsService, BazelStatsVectorService bazelStatsVectorService) {
@@ -38,15 +48,11 @@ public class BazelStatsController {
     }
 
 
-
-    /***
-     *
-     * For Later, Map the BazelStats Entity with a BazelStatsResponse Object.
-     * For Now, Return the persisted Object without mapping, In both the POST and GET Endpoints.
-     * Only a BazelStatsPostRequest is used to map the request to the persisted entity in our domain.
-     *
+    /**
+     * @param buildId The id of the build
+     * @param request Request of Type BazelStatsPostRequest, contains the Payload found in the BazelStats Object.
+     * @return Returns the same object if it has been committed committed successfully to the database, else returns an error
      */
-
     @PostMapping("/builds/{buildId}/bazel-stats")
     public ResponseEntity<?> addStat(@PathVariable("buildId") long buildId, @RequestBody BazelStatsPostRequest request){
         try{
@@ -57,6 +63,10 @@ public class BazelStatsController {
         }
     }
 
+    /**
+     * @return Fetches all the BazelStats Objects from the database and returns them in the form of a list.
+     * Return an error if it fails.
+     */
     @GetMapping("/bazel-stats")
     public ResponseEntity<?> findAllBazelStats(){
         try{
@@ -67,6 +77,10 @@ public class BazelStatsController {
         }
     }
 
+    /**
+     * @param n Number of BazelStats Objects to fetch from the database
+     * @return A list of the last N BazelStats Objects
+     */
     @GetMapping("/bazel-stats/{n}")
     public ResponseEntity<?> findTheLatestNBazelStats(@PathVariable long n){
         try{
@@ -77,6 +91,10 @@ public class BazelStatsController {
         }
     }
 
+    /**
+     * @param request list of build names
+     * @return list of BazelStats Objects where the name is in the requested list. Returns error upon failure.
+     */
     @PostMapping("/builds-name/bazel-stats")
     public ResponseEntity<?> findBazelStatsByBuildNames(@RequestBody ListOfBazelStatsBuildNameRequest request){
         try{

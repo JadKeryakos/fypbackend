@@ -8,14 +8,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author Maroun Ayli
+ */
 @RestController
 @RequestMapping("/builds")
 public class BuildController {
 
+    /**
+     * Service that is used to perform database related operations on builds
+     */
     private final BuildService buildService;
 
     @Autowired
@@ -24,17 +29,24 @@ public class BuildController {
     }
 
 
+    /**
+     * @return All the Build Objects
+     */
     @GetMapping("")
     public ResponseEntity<?> findAllBazelBuilds() {
         try {
             List<Build> bazelBuilds = buildService.findAllBazelBuilds();
-            List<BuildApiResponse> responseList = buildListFromBuildList(bazelBuilds);
             return ResponseEntity.status(HttpStatus.OK).body(bazelBuilds);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
+
+    /**
+     * @param n The number of builds
+     * @return List containing the names of the last n builds
+     */
     @GetMapping("/{n}")
     public ResponseEntity<?> findLastNBazelBuildNames(@PathVariable long n){
         try{
@@ -47,8 +59,10 @@ public class BuildController {
     }
 
 
-
-
+    /**
+     * @param request Request Containing the necessary information to create a build
+     * @return The created build object if successful, error otherwise.
+     */
     @PostMapping("")
     public ResponseEntity<?> createBuild(@RequestBody BuildApiRequest request) {
         try {
@@ -60,6 +74,11 @@ public class BuildController {
         }
     }
 
+    /**
+     * @param id The id of the build to be updated.
+     * @param request The request contains the updated status about the build and tests outcomes.
+     * @return
+     */
     @PutMapping("/build/{id}")
     public ResponseEntity<?> updateBuild(@PathVariable Long id, @RequestBody BuildUpdateRequest request){
         try{
@@ -73,6 +92,12 @@ public class BuildController {
         }
     }
 
+    /**
+     * @param id The id of the build to be deleted.
+     * @return Empty response if successful, error otherwise.
+     *
+     * Deletes the build and every other stat related to it.
+     */
     @DeleteMapping("/build/{id}")
     public ResponseEntity<?> deleteBuild(@PathVariable long id){
         try{
@@ -84,6 +109,10 @@ public class BuildController {
         }
     }
 
+    /**
+     * @return Empty response if successful, error otherwise.
+     * Deletes all the builds and everything related to them -> Empties the database.
+     */
     @DeleteMapping("/build/all")
     public ResponseEntity<?> deleteAllBuilds(){
         try{
@@ -102,14 +131,6 @@ public class BuildController {
                 .build();
     }
 
-
-    private List<BuildApiResponse> buildListFromBuildList(List<Build> listOfBuilds) {
-        List<BuildApiResponse> responseList = new ArrayList<>();
-        for (Build build : listOfBuilds) {
-            responseList.add(buildFromBuildDTO(build));
-        }
-        return responseList;
-    }
 
     private BuildApiResponse buildFromBuildDTO(Build build) {
         return BuildApiResponse.builder()

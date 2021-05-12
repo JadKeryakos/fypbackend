@@ -5,6 +5,9 @@ import lombok.*;
 
 import java.util.List;
 
+/**
+ * @author Maroun Ayli
+ */
 @Getter
 @Setter
 @Builder
@@ -12,6 +15,9 @@ import java.util.List;
 @AllArgsConstructor
 public class BazelStatsPostRequest {
 
+    /**
+     * List of BazelStats Vectors
+     */
     @JsonProperty("payload")
     private List<BazelStatsVectorPostRequest> bazelStatsVectorList;
 }
