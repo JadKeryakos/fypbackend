@@ -28,8 +28,8 @@ public class BuildTestsController {
     }
 
 
-    @GetMapping("/tests/{testId}")
-    public ResponseEntity findTestById(@PathVariable("buildId") long buildId) {
+    @GetMapping("/tests/{buildId}")
+    public ResponseEntity<?> findTestById(@PathVariable("buildId") long buildId) {
         try {
             BuildTests buildTest = buildTestsService.findBuildTestByBuildId(buildId);
             BuildTestApiResponse response = buildResponseFromBuildTest(buildTest);
@@ -40,7 +40,7 @@ public class BuildTestsController {
     }
 
     @GetMapping("/tests")
-    public ResponseEntity findAllTests() {
+    public ResponseEntity<?> findAllTests() {
         try {
             List<BuildTests> buildTest = buildTestsService.findAllTests();
             List<BuildTestApiResponse> response = buildListOFBuildTestsResponseFrom(buildTest);
@@ -52,12 +52,8 @@ public class BuildTestsController {
 
 
     @PostMapping("/builds/{buildId}/test")
-    public ResponseEntity addTestForBuildUsingBuildId(@PathVariable("buildId") long buildId, @RequestBody BuildTestApiRequest request) {
+    public ResponseEntity<?> addTestForBuildUsingBuildId(@PathVariable("buildId") long buildId, @RequestBody BuildTestApiRequest request) {
         try {
-            System.out.println(buildId);
-            System.out.println(request.getTestFailed());
-            System.out.println(request.getTestPassed());
-            System.out.println("------------------------------------------------------------------------------");
             BuildTests buildTest = buildTestsService.addTestForBuildUsingBuildId(buildId, buildBuildTestsFrom(request));
             BuildTestApiResponse response = buildResponseFromBuildTest(buildTest);
             return ResponseEntity.status(HttpStatus.OK).body(response);
@@ -75,7 +71,7 @@ public class BuildTestsController {
 
 
     @GetMapping("/builds/{buildId}/test")
-    public ResponseEntity findBuildTestsByBuildId(@PathVariable("buildId") long buildId) {
+    public ResponseEntity<?> findBuildTestsByBuildId(@PathVariable("buildId") long buildId) {
         try {
             BuildTests buildTest = buildTestsService.findBuildTestByBuildId(buildId);
             BuildTestApiResponse response = buildResponseFromBuildTest(buildTest);
@@ -86,7 +82,7 @@ public class BuildTestsController {
     }
 
     @PostMapping("builds/test/agg")
-    public ResponseEntity findBuildTestAggregations(@RequestBody CppCheckAggregationRequest request) {
+    public ResponseEntity<?> findBuildTestAggregations(@RequestBody CppCheckAggregationRequest request) {
         try {
             Map<String, TestsAgg> res = buildTestsService.generateTestsAgg(request.getAggregations(),request.getAggregationSize());
             return ResponseEntity.status(HttpStatus.OK).body(res);

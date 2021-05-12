@@ -25,7 +25,7 @@ public class BuildController {
 
 
     @GetMapping("")
-    public ResponseEntity findAllBazelBuilds() {
+    public ResponseEntity<?> findAllBazelBuilds() {
         try {
             List<Build> bazelBuilds = buildService.findAllBazelBuilds();
             List<BuildApiResponse> responseList = buildListFromBuildList(bazelBuilds);
@@ -35,10 +35,10 @@ public class BuildController {
         }
     }
 
-    @GetMapping("/{nbOfBuilds}")
-    public ResponseEntity findLastNBazelBuildNames(@PathVariable long nbOfBuilds){
+    @GetMapping("/{n}")
+    public ResponseEntity<?> findLastNBazelBuildNames(@PathVariable long n){
         try{
-            List<String> lastNBazelBuildNames = buildService.findLastNBazelBuildNames(nbOfBuilds);
+            List<String> lastNBazelBuildNames = buildService.findLastNBazelBuildNames(n);
             List<BazelStatsBuildNamesResponse> bazelStatsBuildNamesResponses = lastNBazelBuildNames.stream().map(name -> BazelStatsBuildNamesResponse.builder().buildName(name).build()).collect(Collectors.toList());
             return ResponseEntity.status(HttpStatus.OK).body(bazelStatsBuildNamesResponses);
         }catch (Exception e){
@@ -50,7 +50,7 @@ public class BuildController {
 
 
     @PostMapping("")
-    public ResponseEntity createBuild(@RequestBody BuildApiRequest request) {
+    public ResponseEntity<?> createBuild(@RequestBody BuildApiRequest request) {
         try {
             Build build = buildService.createBuild(getBuildFromApiRequest(request));
             BuildApiResponse response = buildFromBuildDTO(build);
@@ -61,7 +61,7 @@ public class BuildController {
     }
 
     @PutMapping("/build/{id}")
-    public ResponseEntity updateBuild(@PathVariable Long id, @RequestBody BuildUpdateRequest request){
+    public ResponseEntity<?> updateBuild(@PathVariable Long id, @RequestBody BuildUpdateRequest request){
         try{
             if(!buildService.updateBuild(id,request.getBuildStatus(),request.getTestsStatus())){
                 throw new NotFoundException("The requested build was not found");

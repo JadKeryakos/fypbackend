@@ -48,7 +48,7 @@ public class BazelStatsController {
      */
 
     @PostMapping("/builds/{buildId}/bazel-stats")
-    public ResponseEntity addStat(@PathVariable("buildId") long buildId, @RequestBody BazelStatsPostRequest request){
+    public ResponseEntity<?> addStat(@PathVariable("buildId") long buildId, @RequestBody BazelStatsPostRequest request){
         try{
             BazelStats bazelStats = bazelStatsService.addStat(buildId,buildBazelStatsFrom(request));
             return ResponseEntity.status(HttpStatus.OK).body(bazelStats);
@@ -58,7 +58,7 @@ public class BazelStatsController {
     }
 
     @GetMapping("/bazel-stats")
-    public ResponseEntity findAllBazelStats(){
+    public ResponseEntity<?> findAllBazelStats(){
         try{
             List<BazelStats> bazelStatsList = bazelStatsService.findAllBazelStats();
             return ResponseEntity.status(HttpStatus.OK).body(bazelStatsList);
@@ -67,10 +67,10 @@ public class BazelStatsController {
         }
     }
 
-    @GetMapping("/bazel-stats/{numberOfRows}")
-    public ResponseEntity findTheLatestNBazelStats(@PathVariable long numberOfRows){
+    @GetMapping("/bazel-stats/{n}")
+    public ResponseEntity<?> findTheLatestNBazelStats(@PathVariable long n){
         try{
-            List<BazelStatsVector> bazelStatsList = bazelStatsVectorService.findTheLatestNBazelStats(numberOfRows);
+            List<BazelStatsVector> bazelStatsList = bazelStatsVectorService.findTheLatestNBazelStats(n);
             return ResponseEntity.status(HttpStatus.OK).body(bazelStatsList);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -88,40 +88,13 @@ public class BazelStatsController {
     }
 
 
-    /*
-    @GetMapping("/build-names/{numberOfRows}")
-    public ResponseEntity findLastNBazelBuildNames(@PathVariable long numberOfRows){
-        try{
-            List<String> bazelStatsList = bazelStatsService.findLastNBazelBuildNames(numberOfRows);
-            List<BazelStatsBuildNamesResponse> responses= bazelStatsList.stream().map(name-> BazelStatsBuildNamesResponse.builder().buildName(name).build()).collect(Collectors.toList());
-            return ResponseEntity.status(HttpStatus.OK).body(responses);
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
-    }
-
-     */
-
- /*   @PostMapping("/build")
-    public ResponseEntity findListOfBazelStatsByBuildName(@RequestBody ListOfBazelStatsRequest request){
-        try{
-            System.out.println(request.getListOfBuildNames().get(0));
-            List<BazelStats> bazelStatsList = bazelStatsService.findListOfBazelStatsByBuildName(request.getListOfBuildNames());
-            return ResponseEntity.status(HttpStatus.OK).body(bazelStatsList);
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
-    }
-
-  */
-
     @PostMapping("bazel-stats/agg")
     public Map<String, BazelStatsAgg> getAggregations(@RequestBody BazelStatsAggregationRequest request){
         return bazelStatsVectorService.generateAggregations(request.getAggregations(),request.getAggregationSize());
     }
 
     private BazelStats buildBazelStatsFrom(BazelStatsPostRequest request) {
-        return new BazelStats().builder()
+        return BazelStats.builder()
                 .bazelStatsVectorList(buildStatsVectorListFrom(request.getBazelStatsVectorList()))
                 .build();
     }
@@ -135,7 +108,7 @@ public class BazelStatsController {
     }
 
     private BazelStatsVector buildSingleStat(BazelStatsVectorPostRequest bazelStatPostRequestEntry) {
-        return new BazelStatsVector().builder()
+        return   BazelStatsVector.builder()
                 .name(bazelStatPostRequestEntry.getName())
                 .percentage(bazelStatPostRequestEntry.getPercentage())
                 .time(bazelStatPostRequestEntry.getTime())
