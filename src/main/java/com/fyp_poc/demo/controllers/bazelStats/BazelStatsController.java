@@ -10,6 +10,7 @@ import com.fyp_poc.demo.controllers.cppCheck.CppCheckBuildNamesRequest;
 import com.fyp_poc.demo.controllers.cppCheck.CppCheckResponse;
 import com.fyp_poc.demo.services.bazelStats.BazelStatsService;
 import com.fyp_poc.demo.services.bazelStatsVector.BazelStatsVectorService;
+import javassist.NotFoundException;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +78,19 @@ public class BazelStatsController {
         }
     }
 
+    @GetMapping("/bazel-stats/{bazelStatsId}")
+    public ResponseEntity<?> findBazelStatsById(@PathVariable("bazelStatsId") long id){
+        try{
+            BazelStats bazelStats = bazelStatsService.findBazelStatsById(id);
+            if(bazelStats == null){
+                throw new NotFoundException(String.format("Bazel Stats with Id %d was not found" , id));
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(bazelStats);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
     /**
      * @param n Number of BazelStats Objects to fetch from the database
      * @return A list of the last N BazelStats Objects
@@ -95,7 +109,7 @@ public class BazelStatsController {
      * @param request list of build names
      * @return list of BazelStats Objects where the name is in the requested list. Returns error upon failure.
      */
-    @PostMapping("/builds-name/bazel-stats")
+    @PostMapping("/bazel-stats/build-names")
     public ResponseEntity<?> findBazelStatsByBuildNames(@RequestBody ListOfBazelStatsBuildNameRequest request){
         try{
             List<BazelStats> BazelStatsVectorList = bazelStatsService.findBazelStatsByBuildNames(request.getListOfBuildNames());

@@ -36,7 +36,7 @@ public class CppCheckController {
          }
     }
 
-    @PostMapping("/builds/cppCheck-agg")
+    @PostMapping("/cppChecks/agg")
     public Map<String, CppCheckAgg> cppCheckAggregations (@RequestBody CppCheckAggregationRequest request){
          return cppCheckService.cppCheckAggregation(request.getAggregations(), request.getAggregationSize());
     }
@@ -74,7 +74,7 @@ public class CppCheckController {
          }
     }
 
-    @PostMapping("/builds-name/cppChecks")
+    @PostMapping("/cppChecks/build-names")
     public ResponseEntity<?> findCppChecksByBuildNames(@RequestBody CppCheckBuildNamesRequest request){
         try{
             List<CppCheck> cppChecks = cppCheckService.findCppChecksByBuildNames(request.getBuildNames());

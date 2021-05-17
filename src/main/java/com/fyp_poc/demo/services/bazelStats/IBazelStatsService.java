@@ -20,4 +20,6 @@ public interface IBazelStatsService {
     void removeBazelStatsForBuild(long id);
     List<BazelStats> findBazelStatsByBuildNames(List<String> listOfBuildNames);
     void removeAllBazelStats();
+
+    BazelStats findBazelStatsById(long id);
 }

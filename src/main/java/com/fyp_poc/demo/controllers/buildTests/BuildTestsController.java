@@ -30,13 +30,13 @@ public class BuildTestsController {
 
 
     /**
-     * @param buildId Find BuildTests by build Id
+     * @param testId Find BuildTests by build Id
      * @return BuildTests with buildId id
      */
-    @GetMapping("/tests/{buildId}")
-    public ResponseEntity<?> findTestById(@PathVariable("buildId") long buildId) {
+    @GetMapping("/tests/{testId}")
+    public ResponseEntity<?> findTestById(@PathVariable("testId") long testId) {
         try {
-            BuildTests buildTest = buildTestsService.findBuildTestByBuildId(buildId);
+            BuildTests buildTest = buildTestsService.findBuildTestByBuildId(testId);
             BuildTestApiResponse response = buildResponseFromBuildTest(buildTest);
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e) {
@@ -76,22 +76,22 @@ public class BuildTestsController {
     }
 
 
-    /**
-     * @param buildId The id of the build
-     * @return The BuildTests Object with build of id {id}.
-     */
-    @GetMapping("/builds/{buildId}/test")
-    public ResponseEntity<?> findBuildTestsByBuildId(@PathVariable("buildId") long buildId) {
-        try {
-            BuildTests buildTest = buildTestsService.findBuildTestByBuildId(buildId);
-            BuildTestApiResponse response = buildResponseFromBuildTest(buildTest);
-            return ResponseEntity.status(HttpStatus.OK).body(response);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
-    }
+//    /**
+//     * @param buildId The id of the build
+//     * @return The BuildTests Object with build of id {id}.
+//     */
+//    @GetMapping("/builds/{buildId}/test")
+//    public ResponseEntity<?> findBuildTestsByBuildId(@PathVariable("buildId") long buildId) {
+//        try {
+//            BuildTests buildTest = buildTestsService.findBuildTestByBuildId(buildId);
+//            BuildTestApiResponse response = buildResponseFromBuildTest(buildTest);
+//            return ResponseEntity.status(HttpStatus.OK).body(response);
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+//        }
+//    }
 
-    @PostMapping("builds/test/agg")
+    @PostMapping("tests/agg")
     public ResponseEntity<?> findBuildTestAggregations(@RequestBody CppCheckAggregationRequest request) {
         try {
             Map<String, TestsAgg> res = buildTestsService.generateTestsAgg(request.getAggregations(),request.getAggregationSize());
@@ -101,7 +101,7 @@ public class BuildTestsController {
         }
     }
 
-    @GetMapping("build/tests/last/{n}")
+    @GetMapping("tests/last/{n}")
     public ResponseEntity<?> findLastNBuildTests(@PathVariable("n") long n){
         try {
             List<BuildTests> buildTest = buildTestsService.findLastNTests(n);
@@ -113,7 +113,7 @@ public class BuildTestsController {
         }
     }
 
-    @PostMapping("build/tests/names/")
+    @PostMapping("tests/build-names")
     public ResponseEntity<?> findTestBuildsNamesIn(@RequestBody NamesListRequest names){
         try {
             List<BuildTests> buildTest = buildTestsService.findNamesIn(names.getNames());

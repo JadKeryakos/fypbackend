@@ -85,6 +85,11 @@ public class BazelStatsService implements IBazelStatsService {
         bazelStatsRepository.removeAll();
     }
 
+    @Override
+    public BazelStats findBazelStatsById(long id) {
+        return bazelStatsRepository.findById(id).orElse(null);
+    }
+
     /*
     @Override
     public BazelStats findByBuildName(String buildName) {
