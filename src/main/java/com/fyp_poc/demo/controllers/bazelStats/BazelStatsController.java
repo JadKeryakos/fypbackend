@@ -81,10 +81,10 @@ public class BazelStatsController {
      * @param n Number of BazelStats Objects to fetch from the database
      * @return A list of the last N BazelStats Objects
      */
-    @GetMapping("/bazel-stats/{n}")
+    @GetMapping("/bazel-stats/last/{n}")
     public ResponseEntity<?> findTheLatestNBazelStats(@PathVariable long n){
         try{
-            List<BazelStatsVector> bazelStatsList = bazelStatsVectorService.findTheLatestNBazelStats(n);
+            List<BazelStats> bazelStatsList = bazelStatsVectorService.lastNBazelStats(n);
             return ResponseEntity.status(HttpStatus.OK).body(bazelStatsList);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());

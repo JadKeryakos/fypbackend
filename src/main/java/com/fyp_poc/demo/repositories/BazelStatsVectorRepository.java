@@ -1,5 +1,6 @@
 package com.fyp_poc.demo.repositories;
 
+import com.fyp_poc.demo.DTO.BazelStats;
 import com.fyp_poc.demo.DTO.BazelStatsVector;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -31,4 +32,5 @@ public interface BazelStatsVectorRepository extends JpaRepository<BazelStatsVect
     @Transactional
     @Query(value = "delete from bazel_stats_vector" , nativeQuery = true)
     void removeAll();
+
 }

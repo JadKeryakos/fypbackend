@@ -1,8 +1,10 @@
 package com.fyp_poc.demo.services.bazelStatsVector;
 
 import com.fyp_poc.demo.AggObjects.BazelStatsAgg;
+import com.fyp_poc.demo.DTO.BazelStats;
 import com.fyp_poc.demo.DTO.BazelStatsVector;
 import com.fyp_poc.demo.AggObjects.BazelStatsVectorAgg;
+import com.fyp_poc.demo.repositories.BazelStatsRepository;
 import com.fyp_poc.demo.repositories.BazelStatsVectorRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +19,13 @@ public class BazelStatsVectorService implements IBazelStatsVectorService{
 
     private final BazelStatsVectorRepository bazelStatsVectorRepository;
     private final Map<String, Function<List<BazelStatsVector>,Double>> aggregatorMap;
+    private final BazelStatsRepository bazelStatsRepository;
 
     public BazelStatsVectorService(BazelStatsVectorRepository bazelStatsVectorRepository,
-                                   Map<String, Function<List<BazelStatsVector>, Double>> aggregatorMap) {
+                                   Map<String, Function<List<BazelStatsVector>, Double>> aggregatorMap, BazelStatsRepository bazelStatsRepository) {
         this.bazelStatsVectorRepository = bazelStatsVectorRepository;
         this.aggregatorMap = aggregatorMap;
+        this.bazelStatsRepository = bazelStatsRepository;
         this.aggregatorMap.put("sum",this::sum);
         this.aggregatorMap.put("max",this::max);
         this.aggregatorMap.put("min",this::min);
@@ -31,6 +35,11 @@ public class BazelStatsVectorService implements IBazelStatsVectorService{
     @Override
     public List<BazelStatsVector> findTheLatestNBazelStats(long numberOfRows) {
         return bazelStatsVectorRepository.findTheLatestNBazelStats(numberOfRows);
+    }
+
+    @Override
+    public List<BazelStats> lastNBazelStats(long numberOfRows) {
+        return bazelStatsRepository.lastNBazelStats(numberOfRows);
     }
 
     @Override

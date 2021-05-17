@@ -17,6 +17,9 @@ public interface BazelStatsRepository extends JpaRepository<BazelStats, Long> {
             , nativeQuery = true)
     List<BazelStats> findBazelStatsByBuildNames(@Param("listOfBuildNames") List<String> listOfBuildNames);
 
+    @Query(value = "select * from bazel_stats order by build_id desc limit :number ;", nativeQuery = true)
+    List<BazelStats> lastNBazelStats(@Param("number") long number);
+
 
     @Query(value="select * from bazel_stats where build_id = :id" , nativeQuery = true)
     BazelStats findBazelStatsByBuildId(long id);

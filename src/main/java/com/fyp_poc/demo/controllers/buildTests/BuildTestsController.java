@@ -2,9 +2,7 @@ package com.fyp_poc.demo.controllers.buildTests;
 
 import com.fyp_poc.demo.AggObjects.TestsAgg;
 import com.fyp_poc.demo.DTO.BuildTests;
-import com.fyp_poc.demo.DTO.CppCheck;
 import com.fyp_poc.demo.controllers.cppCheck.CppCheckAggregationRequest;
-import com.fyp_poc.demo.controllers.cppCheck.CppCheckResponse;
 import com.fyp_poc.demo.services.buildTests.IBuildTestsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +18,9 @@ import java.util.Map;
 
 public class BuildTestsController {
 
+    /**
+     * Service that is responsible to handle database-related queries for BuildTests
+     */
     private final IBuildTestsService buildTestsService;
 
     @Autowired
@@ -28,6 +29,10 @@ public class BuildTestsController {
     }
 
 
+    /**
+     * @param buildId Find BuildTests by build Id
+     * @return BuildTests with buildId id
+     */
     @GetMapping("/tests/{buildId}")
     public ResponseEntity<?> findTestById(@PathVariable("buildId") long buildId) {
         try {
@@ -39,6 +44,9 @@ public class BuildTestsController {
         }
     }
 
+    /**
+     * @return List of all the BuildTest
+     */
     @GetMapping("/tests")
     public ResponseEntity<?> findAllTests() {
         try {
@@ -51,6 +59,11 @@ public class BuildTestsController {
     }
 
 
+    /**
+     * @param buildId The id of the referenced build
+     * @param request Object containing the necessary parameters to create a Build
+     * @return The created build if successful, an error otherwise
+     */
     @PostMapping("/builds/{buildId}/test")
     public ResponseEntity<?> addTestForBuildUsingBuildId(@PathVariable("buildId") long buildId, @RequestBody BuildTestApiRequest request) {
         try {
@@ -62,14 +75,11 @@ public class BuildTestsController {
         }
     }
 
-    private BuildTests buildBuildTestsFrom(BuildTestApiRequest request) {
-        return BuildTests.builder()
-                .testFailed(request.getTestFailed())
-                .testPassed(request.getTestPassed())
-                .build();
-    }
 
-
+    /**
+     * @param buildId The id of the build
+     * @return The BuildTests Object with build of id {id}.
+     */
     @GetMapping("/builds/{buildId}/test")
     public ResponseEntity<?> findBuildTestsByBuildId(@PathVariable("buildId") long buildId) {
         try {
@@ -131,5 +141,12 @@ public class BuildTestsController {
                 .build(buildTest.getBuild())
                 .build();
     }
+    private BuildTests buildBuildTestsFrom(BuildTestApiRequest request) {
+        return BuildTests.builder()
+                .testFailed(request.getTestFailed())
+                .testPassed(request.getTestPassed())
+                .build();
+    }
+
 
 }
